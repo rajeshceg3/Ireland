@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Pastel Light Theme */
+  --color-primary: 74 222 128; /* Lighter Green (Tailwind green-400) */
+  --color-secondary: 34 197 94; /* Slightly darker green (Tailwind green-500) */
+  --color-background: 229 231 235; /* Lighter Gray (Tailwind gray-200) */
+  --color-text: 55 65 81; /* Darker Gray (Tailwind gray-700) */
+  --color-card-background: 255 255 255; /* White */
+  --color-muted-text: 107 114 128; /* Medium Gray (Tailwind gray-500) */
+      --color-header-text: 30 41 59; /* Dark Slate (Tailwind slate-800) for good contrast on light green */
+}
+
+.dark {
+  /* Muted Dark Theme */
+  --color-primary: 21 94 55;    /* Darker Muted Green (Tailwind green-800 variant) */
+  --color-secondary: 22 101 52; /* Dark Muted Green (Tailwind green-700 variant) */
+  --color-background: 31 41 55;  /* Dark Slate Blue (Tailwind slate-800) */
+  --color-text: 203 213 225;   /* Light Gray (Tailwind slate-300) */
+  --color-card-background: 51 65 85; /* Darker Slate Blue (Tailwind slate-700) */
+  --color-muted-text: 156 163 175; /* Lighter Muted Gray (Tailwind gray-400) */
+      --color-header-text: 255 255 255; /* White text for dark primary */
+}
+
+body {
+  background-color: rgb(var(--color-background));
+  color: rgb(var(--color-text));
+  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
