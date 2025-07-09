@@ -70,10 +70,7 @@ function App() {
     if (selectedAttraction) {
       document.title = `${selectedAttraction.name} | Ireland Tourist Map`;
     } else {
-      // Reset to base title if it was changed by this effect
-      if (document.title !== baseTitle) {
-        document.title = baseTitle;
-      }
+      document.title = baseTitle;
     }
   }, [selectedAttraction]); // Runs when selectedAttraction changes
 

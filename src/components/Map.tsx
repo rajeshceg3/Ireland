@@ -42,6 +42,14 @@ const MapComponent: React.FC<MapComponentProps> = ({
     );
   }
 
+  if (attractionsToDisplay.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-full text-text-primary text-lg p-4 text-center">
+        No attractions match your current filters or search term.
+      </div>
+    );
+  }
+
   return (
     <MapContainer center={[53.4, -7.9]} zoom={7} style={{ height: '100%', width: '100%' }}>
       <TileLayer
