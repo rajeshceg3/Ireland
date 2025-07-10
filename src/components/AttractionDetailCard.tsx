@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Attraction } from '../types/attraction';
 
 interface Props {
@@ -8,7 +8,15 @@ interface Props {
 }
 
 const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggeringElementRef }) => {
+  const [imageError, setImageError] = useState(false);
+  const [isMainImageLoading, setIsMainImageLoading] = useState(true);
   if (!attraction) return null; // Don't render if no attraction is selected
+
+  // When the attraction changes, reset the loading and error states for the new image
+  useEffect(() => {
+    setImageError(false);
+    setIsMainImageLoading(true);
+  }, [attraction]);
 
   const modalRef = useRef<HTMLDivElement>(null); // Ref for the main modal container div
   const firstFocusableElementRef = useRef<HTMLButtonElement>(null); // Ref for the first focusable element (e.g., 'x' close button)
@@ -110,11 +118,34 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
 
         {attraction.photos && attraction.photos.length > 0 && (
           <div className="mb-3 sm:mb-4">
-            <img src={attraction.photos[0]} alt={attraction.name} className="w-full h-48 sm:h-64 object-cover rounded-md mb-2" />
+            {isMainImageLoading && !imageError && (
+              <div className="w-full h-48 sm:h-64 bg-gray-300 rounded-md mb-2 animate-pulse"></div>
+            )}
+            <img
+              src={attraction.photos[0]}
+              alt={attraction.name}
+              className={`w-full h-48 sm:h-64 object-cover rounded-md mb-2 ${isMainImageLoading || imageError ? 'hidden' : 'block'}`}
+              onLoad={() => setIsMainImageLoading(false)}
+              onError={() => {
+                setImageError(true);
+                setIsMainImageLoading(false);
+              }}
+            />
+            {imageError && (
+              <div className="w-full h-48 sm:h-64 flex items-center justify-center bg-gray-200 rounded-md mb-2">
+                <span className="text-gray-500">Image not available</span>
+              </div>
+            )}
             {attraction.photos.length > 1 && (
               <div className="flex space-x-1 sm:space-x-2 overflow-x-auto">
                 {attraction.photos.slice(1).map((photo, index) => (
-                  <img key={index} src={photo} alt={`${attraction.name} thumbnail ${index + 2}`} className="w-20 h-12 sm:w-24 sm:h-16 object-cover rounded"/>
+                  <img
+                    key={index}
+                    src={photo}
+                    alt={`${attraction.name} thumbnail ${index + 2}`}
+                    className="w-20 h-12 sm:w-24 sm:h-16 object-cover rounded"
+                    onError={(e) => ((e.currentTarget as HTMLImageElement).style.display = 'none')}
+                  />
                 ))}
               </div>
             )}
