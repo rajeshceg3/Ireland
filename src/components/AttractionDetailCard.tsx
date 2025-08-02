@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Attraction } from '../types/attraction';
+import { useItinerary } from '../context/ItineraryContext';
 
 interface Props {
   attraction: Attraction | null;
@@ -8,6 +9,7 @@ interface Props {
 }
 
 const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggeringElementRef }) => {
+  const { addAttractionToItinerary, isAttractionInItinerary } = useItinerary();
   const [imageError, setImageError] = useState(false);
   const [isMainImageLoading, setIsMainImageLoading] = useState(true);
 
@@ -157,16 +159,34 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
 
         <p className="text-muted-text mb-1 text-sm">Category: {attraction.category}</p>
         <p className="text-lg mb-3">{attraction.description}</p>
-        <p className="font-semibold mb-1">Rating: {attraction.rating} / 5</p>
-        <p className="text-sm text-muted-text">
-          Hours: {attraction.hours.open} - {attraction.hours.close}
-        </p>
+        <div className="text-sm text-text-secondary dark:text-text-secondary-dark space-y-1 mb-4">
+          <p><strong>Rating:</strong> {attraction.rating} / 5</p>
+          <p><strong>Hours:</strong> {attraction.hours.open} - {attraction.hours.close}</p>
+          {attraction.averageVisitDuration && (
+            <p><strong>Avg. Visit:</strong> {attraction.averageVisitDuration} minutes</p>
+          )}
+          {attraction.website && (
+            <p><strong>Website:</strong> <a href={attraction.website} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">{attraction.website}</a></p>
+          )}
+        </div>
+
+        <button
+          onClick={() => {
+            if (attraction) {
+              addAttractionToItinerary(attraction);
+            }
+          }}
+          disabled={isAttractionInItinerary(attraction.id)}
+          className="mt-4 bg-primary text-white py-2 px-4 rounded hover:bg-secondary w-full disabled:bg-gray-400 disabled:cursor-not-allowed"
+        >
+          {isAttractionInItinerary(attraction.id) ? 'Added to Itinerary' : 'Add to Itinerary'}
+        </button>
 
         {/* Assigns ref to the 'Close' button at the bottom, considered the last focusable element */}
         <button
           ref={lastFocusableElementRef}
           onClick={handleClose}
-          className="mt-6 bg-primary text-white py-2 px-4 rounded hover:bg-secondary w-full"
+          className="mt-2 bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400 w-full"
         >
           Close
         </button>
@@ -174,4 +194,5 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
     </div>
   );
 };
+
 export default AttractionDetailCard;

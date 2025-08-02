@@ -7,7 +7,9 @@
     "photos": ["https://via.placeholder.com/300x200.png?text=Cliffs+of+Moher+1", "https://via.placeholder.com/300x200.png?text=Cliffs+of+Moher+2"],
     "rating": 4.8,
     "hours": { "open": "09:00", "close": "19:00" },
-    "category": "Natural Site"
+    "category": "Natural Site",
+    "averageVisitDuration": 120,
+    "website": "https://www.cliffsofmoher.ie/"
   },
   {
     "id": "2",
@@ -17,7 +19,9 @@
     "photos": ["https://via.placeholder.com/300x200.png?text=Guinness+Storehouse+1"],
     "rating": 4.5,
     "hours": { "open": "10:00", "close": "18:00" },
-    "category": "Museum"
+    "category": "Museum",
+    "averageVisitDuration": 180,
+    "website": "https://www.guinness-storehouse.com/"
   },
   {
     "id": "3",
@@ -27,7 +31,9 @@
     "photos": ["https://via.placeholder.com/300x200.png?text=Blarney+Castle+1"],
     "rating": 4.6,
     "hours": { "open": "09:00", "close": "17:30" },
-    "category": "Castle"
+    "category": "Castle",
+    "averageVisitDuration": 150,
+    "website": "https://www.blarneycastle.ie/"
   },
   {
     "id": "4",

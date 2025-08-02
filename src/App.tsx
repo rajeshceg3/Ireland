@@ -4,9 +4,11 @@ import MapComponent from './components/Map';
 import CategoryFilter from './components/CategoryFilter';
 import AttractionDetailCard from './components/AttractionDetailCard';
 import JsonLdInjector from './components/JsonLdInjector';
+import ItineraryPanel from './components/ItineraryPanel';
 import { Attraction } from './types/attraction';
 import { AttractionCategory, ATTRACTION_CATEGORIES } from './config/categories';
 import { truncateAtWordBoundary } from './utils/text';
+import { fetchAllAttractions } from './services/attractionService';
 
 type Theme = 'light' | 'dark';
 
@@ -26,6 +28,8 @@ function App() {
   // Theming state
   const [theme, setTheme] = useState<Theme>('light'); // Current theme ('light' or 'dark')
 
+  const [isItineraryOpen, setIsItineraryOpen] = useState(false);
+
   // SEO state for dynamic JSON-LD
   const [touristAttractionLd, setTouristAttractionLd] = useState<object | null>(null); // JSON-LD data for the selected attraction
 
@@ -35,15 +39,11 @@ function App() {
   // --- Effects ---
   // Effect to fetch initial attraction data from the API on component mount
   useEffect(() => {
-    const fetchAttractions = async () => {
+    const loadAttractions = async () => {
       setIsLoadingApi(true);
       setApiError(null);
       try {
-        const response = await fetch('/api/attractions.json'); // Fetches from public/api/
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data: Attraction[] = await response.json();
+        const data = await fetchAllAttractions();
         setAllAttractionsData(data);
       } catch (error) {
         const errorMessage = error instanceof Error ? error.message : 'An unknown error occurred';
@@ -53,7 +53,7 @@ function App() {
         setIsLoadingApi(false); // Ensure loading is set to false after fetch attempt
       }
     };
-    fetchAttractions();
+    loadAttractions();
   }, []); // Empty dependency array ensures this effect runs only once on mount
 
   // Effect to handle theme changes by applying/removing the 'dark' class to the HTML element
@@ -147,19 +147,29 @@ function App() {
           onSearchChange={handleSearchChange}
           theme={theme}
           onToggleTheme={toggleTheme}
+          isItineraryOpen={isItineraryOpen}
+          onToggleItinerary={() => setIsItineraryOpen(!isItineraryOpen)}
         />
         <CategoryFilter
           selectedCategory={activeCategoryFilter}
           onSelectCategory={handleCategorySelect}
         />
-        <main className="flex-grow">
-          <MapComponent
-            attractions={allAttractionsData}
-            onMarkerClick={handleOpenDetailCard}
-            activeCategoryFilter={activeCategoryFilter}
-            searchTerm={searchTerm}
-          />
-        </main>
+        <div className="flex flex-grow overflow-hidden">
+          <div className="w-full md:w-2/3 lg:w-3/4 h-full">
+            <MapComponent
+              attractions={allAttractionsData}
+              onMarkerClick={handleOpenDetailCard}
+              activeCategoryFilter={activeCategoryFilter}
+              searchTerm={searchTerm}
+            />
+          </div>
+          <div className={`
+            ${isItineraryOpen ? 'block' : 'hidden'}
+            md:block md:w-1/3 lg:w-1/4 p-4 overflow-y-auto bg-gray-100 dark:bg-gray-800
+          `}>
+            <ItineraryPanel />
+          </div>
+        </div>
         <AttractionDetailCard
           attraction={selectedAttraction}
           onClose={handleCloseDetailCard}
