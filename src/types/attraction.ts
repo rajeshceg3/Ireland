@@ -13,4 +13,6 @@ export interface Attraction {
     close: string; // e.g., "17:00"
   };
   category: string; // "Museum", "Castle", "Natural Site", etc.
+  averageVisitDuration?: number; // Optional: duration in minutes
+  website?: string; // Optional: URL to the official website
 }
