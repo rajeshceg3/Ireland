@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Attraction } from '../types/attraction';
 
 interface Props {
@@ -10,17 +10,18 @@ interface Props {
 const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggeringElementRef }) => {
   const [imageError, setImageError] = useState(false);
   const [isMainImageLoading, setIsMainImageLoading] = useState(true);
-  if (!attraction) return null; // Don't render if no attraction is selected
-
-  // When the attraction changes, reset the loading and error states for the new image
-  useEffect(() => {
-    setImageError(false);
-    setIsMainImageLoading(true);
-  }, [attraction]);
 
   const modalRef = useRef<HTMLDivElement>(null); // Ref for the main modal container div
   const firstFocusableElementRef = useRef<HTMLButtonElement>(null); // Ref for the first focusable element (e.g., 'x' close button)
   const lastFocusableElementRef = useRef<HTMLButtonElement>(null);  // Ref for the last focusable element (e.g., 'Close' button at the bottom)
+
+  // When the attraction changes, reset the loading and error states for the new image
+  useEffect(() => {
+    if (attraction) {
+      setImageError(false);
+      setIsMainImageLoading(true);
+    }
+  }, [attraction]);
 
   // Effect to set initial focus to the first focusable element (the 'x' button) when the modal opens.
   useEffect(() => {
@@ -28,6 +29,14 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
       firstFocusableElementRef.current.focus();
     }
   }, [attraction]); // Dependency: run when 'attraction' prop changes (modal opens/content changes)
+
+  // Internal wrapper for the onClose prop to also handle returning focus.
+  const handleClose = useCallback(() => {
+    onClose(); // Call the original onClose prop (likely from App.tsx to set selectedAttraction to null)
+    if (triggeringElementRef?.current) {
+      triggeringElementRef.current.focus(); // Return focus to the element that opened the modal
+    }
+  }, [onClose, triggeringElementRef]);
 
   // Effect for handling keyboard interactions: Escape key for closing and Tab/Shift+Tab for focus trapping.
   useEffect(() => {
@@ -82,15 +91,9 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [onClose, attraction, triggeringElementRef]); // Dependencies for the effect
+  }, [attraction, handleClose]); // Dependencies for the effect
 
-  // Internal wrapper for the onClose prop to also handle returning focus.
-  const handleClose = () => {
-    onClose(); // Call the original onClose prop (likely from App.tsx to set selectedAttraction to null)
-    if (triggeringElementRef?.current) {
-      triggeringElementRef.current.focus(); // Return focus to the element that opened the modal
-    }
-  };
+  if (!attraction) return null; // Don't render if no attraction is selected
 
   return (
     <div
@@ -164,7 +167,6 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
           ref={lastFocusableElementRef}
           onClick={handleClose}
           className="mt-6 bg-primary text-white py-2 px-4 rounded hover:bg-secondary w-full"
-          aria-label="Close attraction details"
         >
           Close
         </button>

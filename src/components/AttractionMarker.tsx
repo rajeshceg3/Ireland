@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import { Attraction } from '../types/attraction';
+import { truncateAtWordBoundary } from '../utils/text';
 
 interface AttractionMarkerProps {
   attraction: Attraction;
@@ -12,8 +13,12 @@ const AttractionMarker: React.FC<AttractionMarkerProps> = ({ attraction, onMarke
   const [isPopupImageLoading, setIsPopupImageLoading] = useState(true);
   const [popupImageError, setPopupImageError] = useState(false);
 
-  const imageUrl = attraction.photos && attraction.photos.length > 0 ? attraction.photos[0] : null;
   const markerRef = useRef<L.Marker>(null);
+  const viewMoreButtonRef = useRef<HTMLButtonElement>(null);
+
+  const imageUrl = useMemo(() =>
+    attraction.photos && attraction.photos.length > 0 ? attraction.photos[0] : null
+  , [attraction.photos]);
 
   useEffect(() => {
     setIsPopupImageLoading(true);
@@ -26,8 +31,16 @@ const AttractionMarker: React.FC<AttractionMarkerProps> = ({ attraction, onMarke
       if (markerRef.current) {
         markerRef.current.openPopup();
       }
-      // The "View More" button within the popup will handle onMarkerClick
     }
+  };
+
+  const handlePopupOpen = () => {
+    // Set timeout to allow popup to render before focusing
+    setTimeout(() => {
+      if (viewMoreButtonRef.current) {
+        viewMoreButtonRef.current.focus();
+      }
+    }, 100); // A small delay is sometimes needed
   };
 
   return (
@@ -37,6 +50,7 @@ const AttractionMarker: React.FC<AttractionMarkerProps> = ({ attraction, onMarke
       ref={markerRef}
       eventHandlers={{
         keydown: handleKeyboardInteraction,
+        popupopen: handlePopupOpen,
       }}
     >
       <Popup>
@@ -45,7 +59,6 @@ const AttractionMarker: React.FC<AttractionMarkerProps> = ({ attraction, onMarke
             <div className="w-full h-24 bg-gray-300 animate-pulse"></div>
           )}
 
-          {/* Single img tag to handle loading, display, and errors */}
           {imageUrl && (
             <img
               src={imageUrl}
@@ -53,7 +66,7 @@ const AttractionMarker: React.FC<AttractionMarkerProps> = ({ attraction, onMarke
               className={`w-full h-24 object-cover ${isPopupImageLoading || popupImageError ? 'hidden' : 'block'}`}
               onLoad={() => {
                 setIsPopupImageLoading(false);
-                setPopupImageError(false); // Ensure error is reset if image loads successfully
+                setPopupImageError(false);
               }}
               onError={() => {
                 setIsPopupImageLoading(false);
@@ -62,15 +75,13 @@ const AttractionMarker: React.FC<AttractionMarkerProps> = ({ attraction, onMarke
             />
           )}
 
-          {/* Error display, shown if popupImageError is true for an existing imageUrl */}
           {popupImageError && imageUrl && (
             <div className="w-full h-24 flex items-center justify-center bg-gray-100">
               <span className="text-gray-500 text-xs">Image unavailable</span>
             </div>
           )}
 
-          {/* Placeholder if no image URL was provided initially */}
-          {!imageUrl && ( // This is the single, correct block for when no image URL exists.
+          {!imageUrl && (
             <div className="w-full h-24 flex items-center justify-center bg-gray-100">
               <span className="text-gray-500 text-xs">No image provided</span>
             </div>
@@ -78,10 +89,11 @@ const AttractionMarker: React.FC<AttractionMarkerProps> = ({ attraction, onMarke
           <div className="p-2">
             <h3 className="font-bold text-base mb-1 truncate">{attraction.name}</h3>
           <p className="text-xs text-muted-text mt-1 h-10 overflow-hidden">
-            {attraction.description.substring(0, 60)}{attraction.description.length > 60 ? '...' : ''}
+            {truncateAtWordBoundary(attraction.description, 60)}...
           </p>
           <p className="text-sm font-semibold mt-1">Rating: {attraction.rating}/5</p>
           <button
+            ref={viewMoreButtonRef}
             onClick={() => onMarkerClick(attraction)}
             className="text-xs text-primary hover:underline mt-1"
           >
