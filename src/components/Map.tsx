@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -10,6 +10,7 @@ import MarkerClusterGroup from 'react-leaflet-markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css'; // Default styling
 import 'leaflet.markercluster/dist/MarkerCluster.Default.css'; // Default styling
 import AttractionMarker from './AttractionMarker';
+import MapUpdater from './MapUpdater';
 
 
 // Fix for default icon issue with webpack
@@ -33,15 +34,18 @@ const MapComponent: React.FC<MapComponentProps> = ({
   activeCategoryFilter,
   searchTerm
 }) => {
-  let attractionsToDisplay = activeCategoryFilter === "All"
-    ? attractions
-    : attractions.filter(attraction => attraction.category === activeCategoryFilter);
+  const attractionsToDisplay = useMemo(() => {
+    let filtered = activeCategoryFilter === "All"
+      ? attractions
+      : attractions.filter(attraction => attraction.category === activeCategoryFilter);
 
-  if (searchTerm.trim() !== "") {
-    attractionsToDisplay = attractionsToDisplay.filter(attraction =>
-      attraction.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-  }
+    if (searchTerm.trim() !== "") {
+      filtered = filtered.filter(attraction =>
+        attraction.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    return filtered;
+  }, [attractions, activeCategoryFilter, searchTerm]);
 
   if (attractionsToDisplay.length === 0) {
     return (
@@ -66,6 +70,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
           />
         ))}
       </MarkerClusterGroup>
+      <MapUpdater attractions={attractionsToDisplay} />
     </MapContainer>
   );
 };

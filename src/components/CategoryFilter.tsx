@@ -13,6 +13,7 @@ const CategoryFilter: React.FC<Props> = ({ selectedCategory, onSelectCategory })
         <button
           key={category}
           onClick={() => onSelectCategory(category)}
+          aria-pressed={selectedCategory === category}
           className={`py-1 px-2 sm:px-3 rounded-full text-xs sm:text-sm ${selectedCategory === category
               ? 'bg-primary text-white font-semibold'
               : 'bg-card-background text-text-primary hover:bg-secondary hover:text-white'}`}
