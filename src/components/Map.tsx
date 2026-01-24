@@ -4,11 +4,8 @@ import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { Attraction } from '../types/attraction';
 import { AttractionCategory } from '../config/categories';
+import { MapPinOff } from 'lucide-react';
 
-// Import for MarkerClusterGroup
-import MarkerClusterGroup from 'react-leaflet-markercluster';
-import 'leaflet.markercluster/dist/MarkerCluster.css'; // Default styling
-import 'leaflet.markercluster/dist/MarkerCluster.Default.css'; // Default styling
 import AttractionMarker from './AttractionMarker';
 import MapUpdater from './MapUpdater';
 
@@ -49,27 +46,29 @@ const MapComponent: React.FC<MapComponentProps> = ({
 
   if (attractionsToDisplay.length === 0) {
     return (
-      <div className="flex justify-center items-center h-full text-text-primary text-lg p-4 text-center">
-        No attractions match your current filters or search term.
+      <div className="flex flex-col justify-center items-center h-full text-muted-text text-lg p-6 text-center bg-gray-50/50">
+        <MapPinOff size={48} className="mb-4 opacity-50" />
+        <h3 className="text-xl font-bold mb-2">No attractions found</h3>
+        <p className="max-w-xs mx-auto">
+            We couldn't find any attractions matching your current filters. Try changing the category or search term.
+        </p>
       </div>
     );
   }
 
   return (
-    <MapContainer center={[53.4, -7.9]} zoom={7} style={{ height: '100%', width: '100%' }}>
+    <MapContainer center={[53.4, -7.9]} zoom={7} style={{ height: '100%', width: '100%' }} className="z-0">
       <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
       />
-      <MarkerClusterGroup>
-        {attractionsToDisplay.map(attraction => (
-          <AttractionMarker
-            key={attraction.id}
-            attraction={attraction}
-            onMarkerClick={onMarkerClick}
-          />
-        ))}
-      </MarkerClusterGroup>
+      {attractionsToDisplay.map(attraction => (
+        <AttractionMarker
+          key={attraction.id}
+          attraction={attraction}
+          onMarkerClick={onMarkerClick}
+        />
+      ))}
       <MapUpdater attractions={attractionsToDisplay} />
     </MapContainer>
   );

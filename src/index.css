@@ -3,29 +3,56 @@
 @tailwind utilities;
 
 :root {
-  /* Pastel Light Theme */
-  --color-primary: 74 222 128; /* Lighter Green (Tailwind green-400) */
-  --color-secondary: 34 197 94; /* Slightly darker green (Tailwind green-500) */
-  --color-background: 229 231 235; /* Lighter Gray (Tailwind gray-200) */
-  --color-text: 55 65 81; /* Darker Gray (Tailwind gray-700) */
+  /* Relaxing Pastel Theme */
+  --color-primary: 136 191 160; /* Soft Sage #88BFA0 */
+  --color-secondary: 242 181 156; /* Soft Peach #F2B59C */
+  --color-background: 253 251 247; /* Cream #FDFBF7 */
+  --color-text: 44 62 80; /* Dark Slate #2C3E50 */
   --color-card-background: 255 255 255; /* White */
-  --color-muted-text: 107 114 128; /* Medium Gray (Tailwind gray-500) */
-      --color-header-text: 30 41 59; /* Dark Slate (Tailwind slate-800) for good contrast on light green */
+  --color-muted-text: 100 116 139; /* Slate 500 */
+  --color-header-text: 44 62 80; /* Dark Slate */
 }
 
 .dark {
   /* Muted Dark Theme */
-  --color-primary: 21 94 55;    /* Darker Muted Green (Tailwind green-800 variant) */
-  --color-secondary: 22 101 52; /* Dark Muted Green (Tailwind green-700 variant) */
-  --color-background: 31 41 55;  /* Dark Slate Blue (Tailwind slate-800) */
-  --color-text: 203 213 225;   /* Light Gray (Tailwind slate-300) */
-  --color-card-background: 51 65 85; /* Darker Slate Blue (Tailwind slate-700) */
-  --color-muted-text: 156 163 175; /* Lighter Muted Gray (Tailwind gray-400) */
-      --color-header-text: 255 255 255; /* White text for dark primary */
+  --color-primary: 85 139 110; /* Muted Sage #558B6E */
+  --color-secondary: 192 122 96; /* Muted Coral #C07A60 */
+  --color-background: 30 41 59; /* Slate 800 */
+  --color-text: 226 232 240; /* Slate 200 */
+  --color-card-background: 15 23 42; /* Slate 900 */
+  --color-muted-text: 148 163 184; /* Slate 400 */
+  --color-header-text: 255 255 255; /* White */
 }
 
 body {
   background-color: rgb(var(--color-background));
   color: rgb(var(--color-text));
-  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+  transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Smooth transitions for common properties */
+a, button, input {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(var(--color-muted-text), 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(var(--color-muted-text), 0.5);
 }

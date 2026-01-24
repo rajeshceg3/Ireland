@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Attraction } from '../types/attraction';
 import { useItinerary } from '../context/ItineraryContext';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, Clock, Globe, Star, MapPin, Check, Plus } from 'lucide-react';
 
 interface Props {
   attraction: Attraction | null;
   onClose: () => void;
-  triggeringElementRef?: React.RefObject<HTMLElement | null>; // Ref to the element that opened the modal
+  triggeringElementRef?: React.RefObject<HTMLElement | null>;
 }
 
 const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggeringElementRef }) => {
@@ -13,11 +15,10 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
   const [imageError, setImageError] = useState(false);
   const [isMainImageLoading, setIsMainImageLoading] = useState(true);
 
-  const modalRef = useRef<HTMLDivElement>(null); // Ref for the main modal container div
-  const firstFocusableElementRef = useRef<HTMLButtonElement>(null); // Ref for the first focusable element (e.g., 'x' close button)
-  const lastFocusableElementRef = useRef<HTMLButtonElement>(null);  // Ref for the last focusable element (e.g., 'Close' button at the bottom)
+  const modalRef = useRef<HTMLDivElement>(null);
+  const firstFocusableElementRef = useRef<HTMLButtonElement>(null);
+  const lastFocusableElementRef = useRef<HTMLButtonElement>(null);
 
-  // When the attraction changes, reset the loading and error states for the new image
   useEffect(() => {
     if (attraction) {
       setImageError(false);
@@ -25,44 +26,35 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
     }
   }, [attraction]);
 
-  // Effect to set initial focus to the first focusable element (the 'x' button) when the modal opens.
   useEffect(() => {
     if (attraction && firstFocusableElementRef.current) {
       firstFocusableElementRef.current.focus();
     }
-  }, [attraction]); // Dependency: run when 'attraction' prop changes (modal opens/content changes)
+  }, [attraction]);
 
-  // Internal wrapper for the onClose prop to also handle returning focus.
   const handleClose = useCallback(() => {
-    onClose(); // Call the original onClose prop (likely from App.tsx to set selectedAttraction to null)
+    onClose();
     if (triggeringElementRef?.current) {
-      triggeringElementRef.current.focus(); // Return focus to the element that opened the modal
+      triggeringElementRef.current.focus();
     }
   }, [onClose, triggeringElementRef]);
 
-  // Effect for handling keyboard interactions: Escape key for closing and Tab/Shift+Tab for focus trapping.
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (!modalRef.current) return; // Ensure modal is rendered
-
-      // Close modal on Escape key press
+      if (!modalRef.current) return;
       if (event.key === 'Escape') {
-        handleClose(); // Use internal handleClose to ensure focus is returned correctly
+        handleClose();
         return;
       }
-
-      // Trap focus within the modal on Tab key press
       if (event.key === 'Tab') {
-        // Find all focusable elements within the modal that are currently visible and part of the layout
         const focusableElements = Array.from(
           modalRef.current.querySelectorAll<HTMLElement>(
             'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
           )
-        ).filter(el => el.offsetParent !== null); // Check el.offsetParent to ensure element is visible
+        ).filter(el => el.offsetParent !== null);
 
-        if (focusableElements.length === 0) return; // No focusable elements found
+        if (focusableElements.length === 0) return;
 
-        // Determine the actual first and last focusable elements, preferring the explicitly reffed ones
         const firstElement = firstFocusableElementRef.current && focusableElements.includes(firstFocusableElementRef.current)
                              ? firstFocusableElementRef.current
                              : focusableElements[0];
@@ -70,128 +62,177 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
                             ? lastFocusableElementRef.current
                             : focusableElements[focusableElements.length - 1];
 
-        if (event.shiftKey) { // Shift + Tab (moving focus backwards)
+        if (event.shiftKey) {
           if (document.activeElement === firstElement) {
-            lastElement.focus(); // Wrap focus to the last element
+            lastElement.focus();
             event.preventDefault();
           }
-        } else { // Tab (moving focus forwards)
+        } else {
           if (document.activeElement === lastElement) {
-            firstElement.focus(); // Wrap focus to the first element
+            firstElement.focus();
             event.preventDefault();
           }
         }
       }
     };
 
-    // Add event listener when the modal is active (attraction is not null)
     if (attraction) {
       document.addEventListener('keydown', handleKeyDown);
     }
-
-    // Clean up event listener when the modal closes or the component unmounts
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [attraction, handleClose]); // Dependencies for the effect
-
-  if (!attraction) return null; // Don't render if no attraction is selected
+  }, [attraction, handleClose]);
 
   return (
-    <div
-      ref={modalRef} // Assign ref to the main modal div for querying focusable elements
-      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center p-4 z-50"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="attraction-detail-title"
-    >
-      <div className="bg-card-background text-text-primary p-4 sm:p-6 rounded-lg shadow-xl max-w-lg w-full max-h-[85vh] sm:max-h-[80vh] overflow-y-auto">
-        <div className="flex justify-between items-center mb-3 sm:mb-4">
-          <h2 id="attraction-detail-title" className="text-xl sm:text-2xl font-bold text-primary">
-            {attraction.name}
-          </h2>
-          {/* Assigns ref to the 'x' close button, considered the first focusable element */}
-          <button
-            ref={firstFocusableElementRef}
+    <AnimatePresence>
+      {attraction && (
+        <div
+          className="fixed inset-0 z-50 flex justify-center items-center p-4 sm:p-6"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="attraction-detail-title"
+        >
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             onClick={handleClose}
-            className="text-muted-text hover:text-text-primary text-2xl p-1 -m-1 sm:p-2 sm:-m-2"
-            aria-label="Close attraction details"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+          />
+
+          <motion.div
+            ref={modalRef}
+            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className="bg-card-background text-text-primary rounded-2xl shadow-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto relative z-10 scrollbar-hide flex flex-col"
           >
-            &times;
-          </button>
+             {/* Image Header */}
+            <div className="relative h-56 sm:h-64 w-full shrink-0">
+                {isMainImageLoading && !imageError && (
+                  <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+                )}
+                <img
+                  src={attraction.photos && attraction.photos.length > 0 ? attraction.photos[0] : ''}
+                  alt={attraction.name}
+                  className={`w-full h-full object-cover ${isMainImageLoading || imageError ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}
+                  onLoad={() => setIsMainImageLoading(false)}
+                  onError={() => { setImageError(true); setIsMainImageLoading(false); }}
+                />
+                 {imageError && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-gray-100 text-gray-400">
+                        <MapPin size={48} opacity={0.5} />
+                    </div>
+                )}
+
+                <button
+                    ref={firstFocusableElementRef}
+                    onClick={handleClose}
+                    className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors backdrop-blur-sm"
+                    aria-label="Close attraction details"
+                >
+                    <X size={20} />
+                </button>
+
+                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent pt-12">
+                     <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold bg-primary text-white mb-1">
+                        {attraction.category}
+                    </span>
+                    <h2 id="attraction-detail-title" className="text-2xl font-bold text-white shadow-sm">
+                        {attraction.name}
+                    </h2>
+                </div>
+            </div>
+
+            <div className="p-6 space-y-4">
+                {/* Stats Row */}
+                <div className="flex flex-wrap gap-4 text-sm text-muted-text">
+                    <div className="flex items-center gap-1.5">
+                        <Star className="text-yellow-400 fill-current" size={16} />
+                        <span className="font-medium text-text-primary">{attraction.rating}</span>/5
+                    </div>
+                    <div className="flex items-center gap-1.5">
+                        <Clock size={16} />
+                        <span>{attraction.hours.open} - {attraction.hours.close}</span>
+                    </div>
+                    {attraction.averageVisitDuration && (
+                        <div className="flex items-center gap-1.5">
+                            <span className="font-medium">Avg:</span> {attraction.averageVisitDuration} min
+                        </div>
+                    )}
+                </div>
+
+                <p className="text-text-primary leading-relaxed text-base">
+                    {attraction.description}
+                </p>
+
+                {attraction.website && (
+                    <a
+                        href={attraction.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 text-primary hover:text-secondary font-medium transition-colors"
+                    >
+                        <Globe size={16} />
+                        Visit Website
+                    </a>
+                )}
+
+                {/* Thumbnails */}
+                {attraction.photos && attraction.photos.length > 1 && (
+                  <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                    {attraction.photos.slice(1).map((photo, index) => (
+                      <img
+                        key={index}
+                        src={photo}
+                        alt={`${attraction.name} thumbnail ${index + 2}`}
+                        className="w-20 h-14 object-cover rounded-lg shadow-sm hover:opacity-80 transition-opacity cursor-pointer border border-gray-100"
+                        onError={(e) => ((e.currentTarget as HTMLImageElement).style.display = 'none')}
+                      />
+                    ))}
+                  </div>
+                )}
+
+                <div className="pt-2 flex flex-col gap-3">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => attraction && addAttractionToItinerary(attraction)}
+                      disabled={isAttractionInItinerary(attraction.id)}
+                      className={`
+                        w-full py-3 px-4 rounded-xl font-bold text-white shadow-md flex items-center justify-center gap-2 transition-all
+                        ${isAttractionInItinerary(attraction.id)
+                            ? 'bg-green-500 cursor-default'
+                            : 'bg-primary hover:bg-primary/90 hover:shadow-lg'
+                        }
+                      `}
+                    >
+                      {isAttractionInItinerary(attraction.id) ? (
+                          <>
+                            <Check size={20} /> Added to Itinerary
+                          </>
+                      ) : (
+                          <>
+                            <Plus size={20} /> Add to Itinerary
+                          </>
+                      )}
+                    </motion.button>
+
+                    <button
+                      ref={lastFocusableElementRef}
+                      onClick={handleClose}
+                      className="w-full py-3 px-4 rounded-xl font-medium text-muted-text hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                    >
+                      Close
+                    </button>
+                </div>
+            </div>
+          </motion.div>
         </div>
-
-        {attraction.photos && attraction.photos.length > 0 && (
-          <div className="mb-3 sm:mb-4">
-            {isMainImageLoading && !imageError && (
-              <div className="w-full h-48 sm:h-64 bg-gray-300 rounded-md mb-2 animate-pulse"></div>
-            )}
-            <img
-              src={attraction.photos[0]}
-              alt={attraction.name}
-              className={`w-full h-48 sm:h-64 object-cover rounded-md mb-2 ${isMainImageLoading || imageError ? 'hidden' : 'block'}`}
-              onLoad={() => setIsMainImageLoading(false)}
-              onError={() => {
-                setImageError(true);
-                setIsMainImageLoading(false);
-              }}
-            />
-            {imageError && (
-              <div className="w-full h-48 sm:h-64 flex items-center justify-center bg-gray-200 rounded-md mb-2">
-                <span className="text-gray-500">Image not available</span>
-              </div>
-            )}
-            {attraction.photos.length > 1 && (
-              <div className="flex space-x-1 sm:space-x-2 overflow-x-auto">
-                {attraction.photos.slice(1).map((photo, index) => (
-                  <img
-                    key={index}
-                    src={photo}
-                    alt={`${attraction.name} thumbnail ${index + 2}`}
-                    className="w-20 h-12 sm:w-24 sm:h-16 object-cover rounded"
-                    onError={(e) => ((e.currentTarget as HTMLImageElement).style.display = 'none')}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-        )}
-
-        <p className="text-muted-text mb-1 text-sm">Category: {attraction.category}</p>
-        <p className="text-lg mb-3">{attraction.description}</p>
-        <div className="text-sm text-text-secondary dark:text-text-secondary-dark space-y-1 mb-4">
-          <p><strong>Rating:</strong> {attraction.rating} / 5</p>
-          <p><strong>Hours:</strong> {attraction.hours.open} - {attraction.hours.close}</p>
-          {attraction.averageVisitDuration && (
-            <p><strong>Avg. Visit:</strong> {attraction.averageVisitDuration} minutes</p>
-          )}
-          {attraction.website && (
-            <p><strong>Website:</strong> <a href={attraction.website} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">{attraction.website}</a></p>
-          )}
-        </div>
-
-        <button
-          onClick={() => {
-            if (attraction) {
-              addAttractionToItinerary(attraction);
-            }
-          }}
-          disabled={isAttractionInItinerary(attraction.id)}
-          className="mt-4 bg-primary text-white py-2 px-4 rounded hover:bg-secondary w-full disabled:bg-gray-400 disabled:cursor-not-allowed"
-        >
-          {isAttractionInItinerary(attraction.id) ? 'Added to Itinerary' : 'Add to Itinerary'}
-        </button>
-
-        {/* Assigns ref to the 'Close' button at the bottom, considered the last focusable element */}
-        <button
-          ref={lastFocusableElementRef}
-          onClick={handleClose}
-          className="mt-2 bg-gray-300 text-gray-800 py-2 px-4 rounded hover:bg-gray-400 w-full"
-        >
-          Close
-        </button>
-      </div>
-    </div>
+      )}
+    </AnimatePresence>
   );
 };
 
