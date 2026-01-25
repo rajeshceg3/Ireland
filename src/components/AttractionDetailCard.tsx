@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Attraction } from '../types/attraction';
 import { useItinerary } from '../context/ItineraryContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Clock, Globe, Star, MapPin, Check, Plus } from 'lucide-react';
+import { X, Clock, Globe, Star, MapPin, Check, Plus, ArrowRight } from 'lucide-react';
 
 interface Props {
   attraction: Attraction | null;
@@ -14,6 +14,7 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
   const { addAttractionToItinerary, isAttractionInItinerary } = useItinerary();
   const [imageError, setImageError] = useState(false);
   const [isMainImageLoading, setIsMainImageLoading] = useState(true);
+  const [justAdded, setJustAdded] = useState(false);
 
   const modalRef = useRef<HTMLDivElement>(null);
   const firstFocusableElementRef = useRef<HTMLButtonElement>(null);
@@ -23,6 +24,7 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
     if (attraction) {
       setImageError(false);
       setIsMainImageLoading(true);
+      setJustAdded(false);
     }
   }, [attraction]);
 
@@ -38,6 +40,14 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
       triggeringElementRef.current.focus();
     }
   }, [onClose, triggeringElementRef]);
+
+  const handleAddToItinerary = () => {
+    if (attraction) {
+        addAttractionToItinerary(attraction);
+        setJustAdded(true);
+        setTimeout(() => setJustAdded(false), 2000);
+    }
+  };
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -84,6 +94,23 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
     };
   }, [attraction, handleClose]);
 
+  // Stagger variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.1,
+            delayChildren: 0.2
+        }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: { y: 0, opacity: 1, transition: { type: 'spring' as const, damping: 20 } }
+  };
+
   return (
     <AnimatePresence>
       {attraction && (
@@ -98,26 +125,29 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={handleClose}
-            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-all"
           />
 
           <motion.div
             ref={modalRef}
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
+            initial={{ opacity: 0, scale: 0.95, y: 40 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, y: 20 }}
+            exit={{ opacity: 0, scale: 0.95, y: 40 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="bg-card-background text-text-primary rounded-2xl shadow-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto relative z-10 scrollbar-hide flex flex-col"
+            className="bg-card-background text-text-primary rounded-3xl shadow-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto relative z-10 scrollbar-hide flex flex-col overflow-hidden"
           >
-             {/* Image Header */}
-            <div className="relative h-56 sm:h-64 w-full shrink-0">
+             {/* Image Header with Parallax-like feel */}
+            <div className="relative h-64 sm:h-72 w-full shrink-0 overflow-hidden group">
                 {isMainImageLoading && !imageError && (
                   <div className="absolute inset-0 bg-gray-200 animate-pulse" />
                 )}
-                <img
+                <motion.img
+                  initial={{ scale: 1.1 }}
+                  animate={{ scale: 1 }}
+                  transition={{ duration: 0.8 }}
                   src={attraction.photos && attraction.photos.length > 0 ? attraction.photos[0] : ''}
                   alt={attraction.name}
-                  className={`w-full h-full object-cover ${isMainImageLoading || imageError ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}
+                  className={`w-full h-full object-cover ${isMainImageLoading || imageError ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500 group-hover:scale-105 transition-transform duration-700`}
                   onLoad={() => setIsMainImageLoading(false)}
                   onError={() => { setImageError(true); setIsMainImageLoading(false); }}
                 />
@@ -127,108 +157,136 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
                     </div>
                 )}
 
-                <button
+                <motion.button
+                    initial={{ opacity: 0, rotate: -90 }}
+                    animate={{ opacity: 1, rotate: 0 }}
+                    transition={{ delay: 0.5 }}
                     ref={firstFocusableElementRef}
                     onClick={handleClose}
-                    className="absolute top-4 right-4 p-2 bg-black/50 hover:bg-black/70 text-white rounded-full transition-colors backdrop-blur-sm"
+                    className="absolute top-4 right-4 p-2 bg-white/20 hover:bg-white/40 text-white rounded-full transition-colors backdrop-blur-md border border-white/20 shadow-sm"
                     aria-label="Close attraction details"
                 >
                     <X size={20} />
-                </button>
+                </motion.button>
 
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent pt-12">
-                     <span className="inline-block px-2 py-0.5 rounded text-xs font-semibold bg-primary text-white mb-1">
+                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent pt-20">
+                     <motion.span
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3 }}
+                        className="inline-block px-2.5 py-1 rounded-md text-xs font-bold bg-primary text-white mb-2 shadow-sm"
+                    >
                         {attraction.category}
-                    </span>
-                    <h2 id="attraction-detail-title" className="text-2xl font-bold text-white shadow-sm">
+                    </motion.span>
+                    <motion.h2
+                        layoutId={`title-${attraction.id}`}
+                        className="text-3xl font-bold text-white shadow-sm leading-tight"
+                    >
                         {attraction.name}
-                    </h2>
+                    </motion.h2>
                 </div>
             </div>
 
-            <div className="p-6 space-y-4">
+            <motion.div
+                className="p-6 space-y-5"
+                variants={containerVariants}
+                initial="hidden"
+                animate="visible"
+            >
                 {/* Stats Row */}
-                <div className="flex flex-wrap gap-4 text-sm text-muted-text">
-                    <div className="flex items-center gap-1.5">
-                        <Star className="text-yellow-400 fill-current" size={16} />
-                        <span className="font-medium text-text-primary">{attraction.rating}</span>/5
+                <motion.div variants={itemVariants} className="flex flex-wrap gap-4 text-sm text-muted-text bg-gray-50 dark:bg-slate-800/50 p-4 rounded-xl">
+                    <div className="flex items-center gap-2">
+                        <Star className="text-yellow-400 fill-current" size={18} />
+                        <span className="font-bold text-text-primary text-base">{attraction.rating}</span>/5
                     </div>
-                    <div className="flex items-center gap-1.5">
-                        <Clock size={16} />
+                    <div className="w-px h-5 bg-gray-300 dark:bg-gray-600"></div>
+                    <div className="flex items-center gap-2">
+                        <Clock size={18} className="text-primary" />
                         <span>{attraction.hours.open} - {attraction.hours.close}</span>
                     </div>
-                    {attraction.averageVisitDuration && (
-                        <div className="flex items-center gap-1.5">
-                            <span className="font-medium">Avg:</span> {attraction.averageVisitDuration} min
-                        </div>
-                    )}
-                </div>
+                </motion.div>
 
-                <p className="text-text-primary leading-relaxed text-base">
+                <motion.p variants={itemVariants} className="text-text-primary leading-relaxed text-base font-normal opacity-90">
                     {attraction.description}
-                </p>
+                </motion.p>
 
                 {attraction.website && (
-                    <a
+                    <motion.a
+                        variants={itemVariants}
                         href={attraction.website}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-primary hover:text-secondary font-medium transition-colors"
+                        className="inline-flex items-center gap-2 text-primary hover:text-secondary font-medium transition-colors group"
                     >
-                        <Globe size={16} />
-                        Visit Website
-                    </a>
+                        <Globe size={18} />
+                        <span>Visit Official Website</span>
+                        <ArrowRight size={16} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                    </motion.a>
                 )}
 
                 {/* Thumbnails */}
                 {attraction.photos && attraction.photos.length > 1 && (
-                  <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+                  <motion.div variants={itemVariants} className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide py-2">
                     {attraction.photos.slice(1).map((photo, index) => (
                       <img
                         key={index}
                         src={photo}
                         alt={`${attraction.name} thumbnail ${index + 2}`}
-                        className="w-20 h-14 object-cover rounded-lg shadow-sm hover:opacity-80 transition-opacity cursor-pointer border border-gray-100"
+                        className="w-24 h-16 object-cover rounded-lg shadow-sm hover:scale-105 transition-transform cursor-pointer border-2 border-transparent hover:border-primary"
                         onError={(e) => ((e.currentTarget as HTMLImageElement).style.display = 'none')}
                       />
                     ))}
-                  </div>
+                  </motion.div>
                 )}
 
-                <div className="pt-2 flex flex-col gap-3">
+                <motion.div variants={itemVariants} className="pt-2 flex flex-col gap-3">
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      onClick={() => attraction && addAttractionToItinerary(attraction)}
+                      onClick={handleAddToItinerary}
                       disabled={isAttractionInItinerary(attraction.id)}
                       className={`
-                        w-full py-3 px-4 rounded-xl font-bold text-white shadow-md flex items-center justify-center gap-2 transition-all
+                        w-full py-3.5 px-4 rounded-xl font-bold text-white shadow-lg shadow-primary/20 flex items-center justify-center gap-2 transition-all relative overflow-hidden
                         ${isAttractionInItinerary(attraction.id)
-                            ? 'bg-green-500 cursor-default'
-                            : 'bg-primary hover:bg-primary/90 hover:shadow-lg'
+                            ? 'bg-green-500 cursor-default ring-4 ring-green-500/20'
+                            : 'bg-primary hover:bg-primary/90'
                         }
                       `}
                     >
-                      {isAttractionInItinerary(attraction.id) ? (
-                          <>
-                            <Check size={20} /> Added to Itinerary
-                          </>
-                      ) : (
-                          <>
-                            <Plus size={20} /> Add to Itinerary
-                          </>
-                      )}
+                        <AnimatePresence mode='wait'>
+                          {isAttractionInItinerary(attraction.id) ? (
+                              <motion.div
+                                key="added"
+                                initial={{ scale: 0.5, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                className="flex items-center gap-2"
+                              >
+                                <Check size={20} strokeWidth={3} />
+                                <span>{justAdded ? "Added!" : "In Your Itinerary"}</span>
+                              </motion.div>
+                          ) : (
+                              <motion.div
+                                key="add"
+                                initial={{ scale: 0.5, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                className="flex items-center gap-2"
+                              >
+                                <Plus size={20} strokeWidth={3} />
+                                <span>Add to Itinerary</span>
+                              </motion.div>
+                          )}
+                        </AnimatePresence>
                     </motion.button>
 
                     <button
                       ref={lastFocusableElementRef}
                       onClick={handleClose}
-                      className="w-full py-3 px-4 rounded-xl font-medium text-muted-text hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                      className="w-full py-3.5 px-4 rounded-xl font-medium text-muted-text hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
                     >
-                      Close
+                      Close Details
                     </button>
-                </div>
-            </div>
+                </motion.div>
+            </motion.div>
           </motion.div>
         </div>
       )}

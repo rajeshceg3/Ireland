@@ -3,25 +3,29 @@
 @tailwind utilities;
 
 :root {
-  /* Relaxing Pastel Theme */
-  --color-primary: 136 191 160; /* Soft Sage #88BFA0 */
-  --color-secondary: 242 181 156; /* Soft Peach #F2B59C */
-  --color-background: 253 251 247; /* Cream #FDFBF7 */
-  --color-text: 44 62 80; /* Dark Slate #2C3E50 */
-  --color-card-background: 255 255 255; /* White */
-  --color-muted-text: 100 116 139; /* Slate 500 */
-  --color-header-text: 44 62 80; /* Dark Slate */
+  /* Relaxing Pastel Theme - Refined */
+  --color-primary: 104, 176, 171; /* Soft Teal #68B0AB */
+  --color-secondary: 244, 162, 97; /* Warm Peach #F4A261 */
+  --color-background: 250, 249, 246; /* Off-White Cream #FAF9F6 */
+  --color-text: 44, 62, 80; /* Dark Slate #2C3E50 */
+  --color-card-background: 255, 255, 255; /* White */
+  --color-muted-text: 100, 116, 139; /* Slate 500 */
+  --color-header-text: 44, 62, 80; /* Dark Slate */
 }
 
 .dark {
-  /* Muted Dark Theme */
-  --color-primary: 85 139 110; /* Muted Sage #558B6E */
-  --color-secondary: 192 122 96; /* Muted Coral #C07A60 */
-  --color-background: 30 41 59; /* Slate 800 */
-  --color-text: 226 232 240; /* Slate 200 */
-  --color-card-background: 15 23 42; /* Slate 900 */
-  --color-muted-text: 148 163 184; /* Slate 400 */
-  --color-header-text: 255 255 255; /* White */
+  /* Muted Dark Theme - Refined */
+  --color-primary: 74, 133, 129; /* Muted Teal */
+  --color-secondary: 181, 109, 84; /* Muted Terracotta */
+  --color-background: 15, 23, 42; /* Darker Slate */
+  --color-text: 241, 245, 249; /* Slate 100 */
+  --color-card-background: 30, 41, 59; /* Slate 800 */
+  --color-muted-text: 148, 163, 184; /* Slate 400 */
+  --color-header-text: 241, 245, 249; /* Slate 100 */
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -31,28 +35,62 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 /* Smooth transitions for common properties */
 a, button, input {
-  transition: all 0.2s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Custom Scrollbar Styling */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(var(--color-muted-text), 0.1);
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(var(--color-muted-text), 0.3);
-  border-radius: 4px;
+  background: rgba(var(--color-primary), 0.5);
+  border-radius: 5px;
+  border: 2px solid transparent;
+  background-clip: content-box;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(var(--color-muted-text), 0.5);
+  background: rgba(var(--color-primary), 0.8);
+}
+
+/* Marker Pulse Animation */
+.marker-pulse {
+  position: relative;
+}
+
+.marker-pulse::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(var(--color-primary), 0.6);
+  animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  z-index: -1;
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.5);
+    opacity: 0;
+  }
 }

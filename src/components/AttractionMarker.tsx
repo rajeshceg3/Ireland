@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Marker, Popup } from 'react-leaflet';
 import L from 'leaflet';
 import { Attraction } from '../types/attraction';
-import { truncateAtWordBoundary } from '../utils/text';
 
 interface AttractionMarkerProps {
   attraction: Attraction;
@@ -24,6 +23,17 @@ const AttractionMarker: React.FC<AttractionMarkerProps> = ({ attraction, onMarke
     setIsPopupImageLoading(true);
     setPopupImageError(false);
   }, [imageUrl]); // Reset when the image URL changes
+
+  // Custom DivIcon for the marker
+  const customIcon = useMemo(() => {
+    return L.divIcon({
+      className: 'custom-marker',
+      html: `<div class="marker-pulse w-6 h-6 rounded-full bg-primary border-2 border-white shadow-md"></div>`,
+      iconSize: [24, 24],
+      iconAnchor: [12, 12],
+      popupAnchor: [0, -12],
+    });
+  }, []);
 
   const handleKeyboardInteraction = (e: L.LeafletKeyboardEvent) => {
     if (e.originalEvent.key === 'Enter' || e.originalEvent.key === ' ') {
@@ -48,22 +58,24 @@ const AttractionMarker: React.FC<AttractionMarkerProps> = ({ attraction, onMarke
       key={attraction.id}
       position={[attraction.location.lat, attraction.location.lng]}
       ref={markerRef}
+      icon={customIcon}
       eventHandlers={{
         keydown: handleKeyboardInteraction,
         popupopen: handlePopupOpen,
+        click: () => onMarkerClick(attraction)
       }}
     >
       <Popup>
-      <div className="w-40 sm:w-48 bg-card-background text-text-primary rounded-lg shadow-lg overflow-hidden">
+      <div className="w-48 sm:w-56 bg-card-background text-text-primary rounded-xl shadow-none overflow-hidden font-sans">
           {isPopupImageLoading && !popupImageError && imageUrl && (
-            <div className="w-full h-24 bg-gray-300 animate-pulse"></div>
+            <div className="w-full h-28 bg-gray-200 animate-pulse"></div>
           )}
 
           {imageUrl && (
             <img
               src={imageUrl}
               alt={attraction.name}
-              className={`w-full h-24 object-cover ${isPopupImageLoading || popupImageError ? 'hidden' : 'block'}`}
+              className={`w-full h-28 object-cover ${isPopupImageLoading || popupImageError ? 'hidden' : 'block'}`}
               onLoad={() => {
                 setIsPopupImageLoading(false);
                 setPopupImageError(false);
@@ -76,29 +88,31 @@ const AttractionMarker: React.FC<AttractionMarkerProps> = ({ attraction, onMarke
           )}
 
           {popupImageError && imageUrl && (
-            <div className="w-full h-24 flex items-center justify-center bg-gray-100">
-              <span className="text-gray-500 text-xs">Image unavailable</span>
+            <div className="w-full h-28 flex items-center justify-center bg-gray-100">
+              <span className="text-gray-400 text-xs">Image unavailable</span>
             </div>
           )}
 
           {!imageUrl && (
-            <div className="w-full h-24 flex items-center justify-center bg-gray-100">
-              <span className="text-gray-500 text-xs">No image provided</span>
+            <div className="w-full h-28 flex items-center justify-center bg-gray-100">
+              <span className="text-gray-400 text-xs">No image provided</span>
             </div>
           )}
-          <div className="p-2">
-            <h3 className="font-bold text-base mb-1 truncate">{attraction.name}</h3>
-          <p className="text-xs text-muted-text mt-1 h-10 overflow-hidden">
-            {truncateAtWordBoundary(attraction.description, 60)}...
+          <div className="p-3">
+            <h3 className="font-bold text-sm mb-1 line-clamp-2 leading-tight">{attraction.name}</h3>
+          <p className="text-xs text-muted-text mt-1 line-clamp-2">
+            {attraction.description}
           </p>
-          <p className="text-sm font-semibold mt-1">Rating: {attraction.rating}/5</p>
-          <button
-            ref={viewMoreButtonRef}
-            onClick={() => onMarkerClick(attraction)}
-            className="text-xs text-primary hover:underline mt-1"
-          >
-            View More
-          </button>
+          <div className="flex justify-between items-center mt-3">
+             <span className="text-xs font-bold text-yellow-500 flex items-center gap-1">★ {attraction.rating}</span>
+             <button
+                ref={viewMoreButtonRef}
+                onClick={() => onMarkerClick(attraction)}
+                className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-md font-medium hover:bg-primary hover:text-white transition-colors"
+            >
+                Details
+            </button>
+          </div>
           </div>
       </div>
       </Popup>
