@@ -141,7 +141,7 @@ function App() {
   return (
     <>
       <JsonLdInjector jsonData={touristAttractionLd} scriptId="touristAttractionLdScript" />
-      <div className="flex flex-col h-screen bg-background">
+      <div className="flex flex-col h-screen bg-background relative overflow-hidden">
         <Header
           searchTerm={searchTerm}
           onSearchChange={handleSearchChange}
@@ -150,12 +150,12 @@ function App() {
           isItineraryOpen={isItineraryOpen}
           onToggleItinerary={() => setIsItineraryOpen(!isItineraryOpen)}
         />
-        <CategoryFilter
-          selectedCategory={activeCategoryFilter}
-          onSelectCategory={handleCategorySelect}
-        />
-        <div className="flex flex-grow overflow-hidden">
-          <div className="w-full md:w-2/3 lg:w-3/4 h-full">
+        <div className="flex flex-grow overflow-hidden relative z-0">
+          <div className="w-full md:w-2/3 lg:w-3/4 h-full relative">
+            <CategoryFilter
+              selectedCategory={activeCategoryFilter}
+              onSelectCategory={handleCategorySelect}
+            />
             <MapComponent
               attractions={allAttractionsData}
               onMarkerClick={handleOpenDetailCard}
@@ -164,8 +164,8 @@ function App() {
             />
           </div>
           <div className={`
-            ${isItineraryOpen ? 'block' : 'hidden'}
-            md:block md:w-1/3 lg:w-1/4 p-4 overflow-y-auto bg-gray-100 dark:bg-gray-800
+            ${isItineraryOpen ? 'block absolute inset-0 z-40 md:static md:z-auto' : 'hidden'}
+            md:block md:w-1/3 lg:w-1/4 h-full overflow-hidden bg-background md:bg-transparent
           `}>
             <ItineraryPanel />
           </div>

@@ -9,34 +9,40 @@ interface Props {
 
 const CategoryFilter: React.FC<Props> = ({ selectedCategory, onSelectCategory }) => {
   return (
-    <nav aria-label="Attraction Categories" className="w-full bg-background/80 backdrop-blur-sm z-20 border-b border-black/5 dark:border-white/10 shadow-sm py-2">
-      <div className="max-w-full overflow-x-auto px-4 pb-1 scrollbar-hide">
-        <motion.div
-            className="flex space-x-2 min-w-max px-2"
-            layout
-        >
+    <div className="absolute top-4 left-0 right-0 z-20 flex justify-center pointer-events-none px-4">
+      <motion.nav
+        initial={{ y: -20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ delay: 0.6, type: 'spring' }}
+        aria-label="Attraction Categories"
+        className="pointer-events-auto bg-white/80 dark:bg-slate-800/80 backdrop-blur-md rounded-full shadow-lg border border-white/20 dark:border-white/10 p-1.5 max-w-full overflow-x-auto scrollbar-hide"
+      >
+        <div className="flex space-x-1 min-w-max">
           {ATTRACTION_CATEGORIES.map((category) => {
             const isSelected = selectedCategory === category;
             return (
-              <motion.button
+              <button
                 key={category}
                 onClick={() => onSelectCategory(category)}
                 aria-pressed={isSelected}
-                layout
-                whileHover={{ scale: 1.05, y: -1 }}
-                whileTap={{ scale: 0.95 }}
-                className={`relative px-4 py-1.5 rounded-full text-sm font-medium transition-colors border shadow-sm ${
-                    isSelected
-                    ? 'bg-primary text-white border-primary'
-                    : 'bg-card-background text-text-primary border-black/5 hover:border-primary/50'
+                className={`relative px-4 py-2 rounded-full text-sm font-medium transition-colors outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+                    isSelected ? 'text-white' : 'text-text-primary hover:text-primary'
                 }`}
               >
-                {category}
-              </motion.button>
+                {isSelected && (
+                  <motion.div
+                    layoutId="activeCategory"
+                    className="absolute inset-0 bg-primary rounded-full shadow-sm"
+                    initial={false}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{category}</span>
+              </button>
             );
           })}
-        </motion.div>
-      </div>
+        </div>
+      </motion.nav>
       <style>{`
         .scrollbar-hide::-webkit-scrollbar {
             display: none;
@@ -46,7 +52,7 @@ const CategoryFilter: React.FC<Props> = ({ selectedCategory, onSelectCategory })
             scrollbar-width: none;
         }
       `}</style>
-    </nav>
+    </div>
   );
 };
 
