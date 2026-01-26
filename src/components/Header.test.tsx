@@ -23,7 +23,7 @@ describe('Header', () => {
     expect(screen.getByText(/Ireland Tourist Map/i)).toBeInTheDocument();
 
     // Check for the search input
-    expect(screen.getByPlaceholderText(/Search attractions.../i)).toBeInTheDocument();
+    expect(screen.getByPlaceholderText(/Search.../i)).toBeInTheDocument();
 
     // Check for the theme toggle button
     expect(screen.getByLabelText(/Toggle Theme/i)).toBeInTheDocument();

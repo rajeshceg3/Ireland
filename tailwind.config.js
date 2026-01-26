@@ -44,6 +44,14 @@ module.exports = {
           '0%, 100%': { transform: 'translateY(0)' },
           '50%': { transform: 'translateY(-10px)' },
         }
+      },
+      boxShadow: {
+        'glow': '0 0 20px rgba(var(--color-primary), 0.5)',
+        'glass': '0 8px 32px 0 rgba(31, 38, 135, 0.15)',
+      },
+      backdropBlur: {
+        'xs': '2px',
+        'xl': '24px',
       }
     },
   },

@@ -141,7 +141,18 @@ function App() {
   return (
     <>
       <JsonLdInjector jsonData={touristAttractionLd} scriptId="touristAttractionLdScript" />
-      <div className="flex flex-col h-screen bg-background relative overflow-hidden">
+      <div className="relative h-screen w-full overflow-hidden bg-background">
+        {/* Map Background - Full Screen */}
+        <div className="absolute inset-0 z-0">
+          <MapComponent
+            attractions={allAttractionsData}
+            onMarkerClick={handleOpenDetailCard}
+            activeCategoryFilter={activeCategoryFilter}
+            searchTerm={searchTerm}
+          />
+        </div>
+
+        {/* Floating Header */}
         <Header
           searchTerm={searchTerm}
           onSearchChange={handleSearchChange}
@@ -150,26 +161,31 @@ function App() {
           isItineraryOpen={isItineraryOpen}
           onToggleItinerary={() => setIsItineraryOpen(!isItineraryOpen)}
         />
-        <div className="flex flex-grow overflow-hidden relative z-0">
-          <div className="w-full md:w-2/3 lg:w-3/4 h-full relative">
-            <CategoryFilter
-              selectedCategory={activeCategoryFilter}
-              onSelectCategory={handleCategorySelect}
-            />
-            <MapComponent
-              attractions={allAttractionsData}
-              onMarkerClick={handleOpenDetailCard}
-              activeCategoryFilter={activeCategoryFilter}
-              searchTerm={searchTerm}
-            />
-          </div>
-          <div className={`
-            ${isItineraryOpen ? 'block absolute inset-0 z-40 md:static md:z-auto' : 'hidden'}
-            md:block md:w-1/3 lg:w-1/4 h-full overflow-hidden bg-background md:bg-transparent
-          `}>
-            <ItineraryPanel />
-          </div>
+
+        {/* Floating Category Filter */}
+        <CategoryFilter
+          selectedCategory={activeCategoryFilter}
+          onSelectCategory={handleCategorySelect}
+        />
+
+        {/* Itinerary Panel - Sliding Drawer */}
+        <div className={`
+          fixed top-0 right-0 h-full z-40 transition-transform duration-300 ease-in-out shadow-2xl
+          ${isItineraryOpen ? 'translate-x-0' : 'translate-x-full'}
+          w-full md:w-96
+        `}>
+          <ItineraryPanel />
+          {/* Close button for mobile/desktop if needed, but the toggle in header handles it */}
+          <button
+             className="absolute top-4 right-4 md:hidden p-2 bg-white/80 rounded-full text-text-primary shadow-sm"
+             onClick={() => setIsItineraryOpen(false)}
+             aria-label="Close Itinerary"
+          >
+             ✕
+          </button>
         </div>
+
+        {/* Detail Modal */}
         <AttractionDetailCard
           attraction={selectedAttraction}
           onClose={handleCloseDetailCard}

@@ -125,16 +125,16 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={handleClose}
-            className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm transition-all"
+            className="absolute inset-0 bg-slate-900/50 backdrop-blur-md transition-all"
           />
 
           <motion.div
             ref={modalRef}
-            initial={{ opacity: 0, scale: 0.95, y: 40 }}
+            initial={{ opacity: 0, scale: 0.9, y: 50 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.95, y: 40 }}
-            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="bg-card-background text-text-primary rounded-3xl shadow-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto relative z-10 scrollbar-hide flex flex-col overflow-hidden"
+            exit={{ opacity: 0, scale: 0.9, y: 50 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300, mass: 0.8 }}
+            className="bg-card-background text-text-primary rounded-3xl shadow-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto relative z-10 scrollbar-hide flex flex-col overflow-hidden border border-white/20"
           >
              {/* Image Header with Parallax-like feel */}
             <div className="relative h-64 sm:h-72 w-full shrink-0 overflow-hidden group">
@@ -142,12 +142,13 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
                   <div className="absolute inset-0 bg-gray-200 animate-pulse" />
                 )}
                 <motion.img
-                  initial={{ scale: 1.1 }}
+                  initial={{ scale: 1.2 }}
                   animate={{ scale: 1 }}
+                  whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.8 }}
                   src={attraction.photos && attraction.photos.length > 0 ? attraction.photos[0] : ''}
                   alt={attraction.name}
-                  className={`w-full h-full object-cover ${isMainImageLoading || imageError ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500 group-hover:scale-105 transition-transform duration-700`}
+                  className={`w-full h-full object-cover ${isMainImageLoading || imageError ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}
                   onLoad={() => setIsMainImageLoading(false)}
                   onError={() => { setImageError(true); setIsMainImageLoading(false); }}
                 />
