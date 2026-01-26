@@ -9,13 +9,13 @@ interface Props {
 
 const CategoryFilter: React.FC<Props> = ({ selectedCategory, onSelectCategory }) => {
   return (
-    <div className="absolute top-4 left-0 right-0 z-20 flex justify-center pointer-events-none px-4">
+    <div className="absolute top-24 left-0 right-0 z-20 flex justify-center pointer-events-none px-4">
       <motion.nav
         initial={{ y: -20, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.6, type: 'spring' }}
         aria-label="Attraction Categories"
-        className="pointer-events-auto bg-white/80 dark:bg-slate-800/80 backdrop-blur-md rounded-full shadow-lg border border-white/20 dark:border-white/10 p-1.5 max-w-full overflow-x-auto scrollbar-hide"
+        className="pointer-events-auto bg-white/60 dark:bg-slate-900/60 backdrop-blur-xl rounded-full shadow-glass border border-white/30 dark:border-white/10 p-1.5 max-w-full overflow-x-auto scrollbar-hide ring-1 ring-white/20"
       >
         <div className="flex space-x-1 min-w-max">
           {ATTRACTION_CATEGORIES.map((category) => {

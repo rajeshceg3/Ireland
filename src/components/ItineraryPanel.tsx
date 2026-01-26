@@ -7,7 +7,7 @@ const ItineraryPanel = () => {
   const { itinerary, removeAttractionFromItinerary } = useItinerary();
 
   return (
-    <aside className="h-full bg-background dark:bg-slate-800/50 p-6 shadow-inner overflow-y-auto flex flex-col">
+    <aside className="h-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-6 shadow-none overflow-y-auto flex flex-col border-l border-white/20">
       <div className="flex items-center justify-between mb-8">
         <div className="flex items-center gap-3">
             <div className="p-2 bg-primary/10 rounded-lg text-primary">

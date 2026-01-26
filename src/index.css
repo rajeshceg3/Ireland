@@ -4,8 +4,8 @@
 
 :root {
   /* Relaxing Pastel Theme - Refined */
-  --color-primary: 104, 176, 171; /* Soft Teal #68B0AB */
-  --color-secondary: 244, 162, 97; /* Warm Peach #F4A261 */
+  --color-primary: 95, 180, 165; /* Vibrant Sage #5FB4A5 */
+  --color-secondary: 255, 180, 100; /* Soft Peach #FFB464 */
   --color-background: 250, 249, 246; /* Off-White Cream #FAF9F6 */
   --color-text: 44, 62, 80; /* Dark Slate #2C3E50 */
   --color-card-background: 255, 255, 255; /* White */
@@ -30,6 +30,10 @@ html {
 
 body {
   background-color: rgb(var(--color-background));
+  background: radial-gradient(circle at top left, rgba(var(--color-primary), 0.1), transparent 70%),
+              radial-gradient(circle at bottom right, rgba(var(--color-secondary), 0.1), transparent 70%),
+              rgb(var(--color-background));
+  background-attachment: fixed;
   color: rgb(var(--color-text));
   transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
