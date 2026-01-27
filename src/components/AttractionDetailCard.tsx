@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { Attraction } from '../types/attraction';
 import { useItinerary } from '../context/ItineraryContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Clock, Globe, Star, MapPin, Check, Plus, ArrowRight } from 'lucide-react';
+import { X, Clock, Globe, Star, MapPin, Check, Plus, ArrowRight, ExternalLink } from 'lucide-react';
 
 interface Props {
   attraction: Attraction | null;
@@ -101,7 +101,7 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
         opacity: 1,
         transition: {
             staggerChildren: 0.1,
-            delayChildren: 0.2
+            delayChildren: 0.1
         }
     }
   };
@@ -115,46 +115,51 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
     <AnimatePresence>
       {attraction && (
         <div
-          className="fixed inset-0 z-50 flex justify-center items-center p-4 sm:p-6"
+          className="fixed inset-0 z-[60] flex justify-center items-center p-4 sm:p-6"
           role="dialog"
           aria-modal="true"
           aria-labelledby="attraction-detail-title"
         >
+          {/* Backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={handleClose}
-            className="absolute inset-0 bg-slate-900/50 backdrop-blur-md transition-all"
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-all"
           />
 
+          {/* Modal Card */}
           <motion.div
             ref={modalRef}
             initial={{ opacity: 0, scale: 0.9, y: 50 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 50 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300, mass: 0.8 }}
-            className="bg-card-background text-text-primary rounded-3xl shadow-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto relative z-10 scrollbar-hide flex flex-col overflow-hidden border border-white/20"
+            className="glass-panel text-text-primary rounded-[2rem] shadow-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto relative z-10 scrollbar-hide flex flex-col overflow-hidden ring-1 ring-white/20"
           >
-             {/* Image Header with Parallax-like feel */}
-            <div className="relative h-64 sm:h-72 w-full shrink-0 overflow-hidden group">
+             {/* Image Header */}
+            <div className="relative h-72 sm:h-80 w-full shrink-0 overflow-hidden group bg-gray-100">
                 {isMainImageLoading && !imageError && (
-                  <div className="absolute inset-0 bg-gray-200 animate-pulse" />
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-10 h-10 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+                  </div>
                 )}
                 <motion.img
-                  initial={{ scale: 1.2 }}
+                  initial={{ scale: 1.1 }}
                   animate={{ scale: 1 }}
                   whileHover={{ scale: 1.05 }}
-                  transition={{ duration: 0.8 }}
+                  transition={{ duration: 1.5, ease: "easeOut" }}
                   src={attraction.photos && attraction.photos.length > 0 ? attraction.photos[0] : ''}
                   alt={attraction.name}
-                  className={`w-full h-full object-cover ${isMainImageLoading || imageError ? 'opacity-0' : 'opacity-100'} transition-opacity duration-500`}
+                  className={`w-full h-full object-cover ${isMainImageLoading || imageError ? 'opacity-0' : 'opacity-100'} transition-opacity duration-700`}
                   onLoad={() => setIsMainImageLoading(false)}
                   onError={() => { setImageError(true); setIsMainImageLoading(false); }}
                 />
                  {imageError && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-gray-100 text-gray-400">
+                    <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-100 text-gray-400 gap-2">
                         <MapPin size={48} opacity={0.5} />
+                        <span className="text-sm font-medium">Image not available</span>
                     </div>
                 )}
 
@@ -164,24 +169,30 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
                     transition={{ delay: 0.5 }}
                     ref={firstFocusableElementRef}
                     onClick={handleClose}
-                    className="absolute top-4 right-4 p-2 bg-white/20 hover:bg-white/40 text-white rounded-full transition-colors backdrop-blur-md border border-white/20 shadow-sm"
+                    className="absolute top-4 right-4 p-2.5 bg-black/20 hover:bg-black/40 text-white rounded-full transition-all backdrop-blur-md border border-white/20 shadow-lg hover:rotate-90"
                     aria-label="Close attraction details"
                 >
                     <X size={20} />
                 </motion.button>
 
-                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/90 via-black/50 to-transparent pt-20">
-                     <motion.span
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
+                <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent pt-32">
+                     <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.3 }}
-                        className="inline-block px-2.5 py-1 rounded-md text-xs font-bold bg-primary text-white mb-2 shadow-sm"
+                        className="flex items-center gap-2 mb-3"
                     >
-                        {attraction.category}
-                    </motion.span>
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/90 text-white shadow-sm backdrop-blur-sm">
+                            {attraction.category}
+                        </span>
+                        <div className="flex items-center gap-1 text-yellow-400 bg-black/30 backdrop-blur-sm px-2 py-0.5 rounded-full">
+                            <Star className="fill-current" size={12} />
+                            <span className="text-xs font-bold text-white">{attraction.rating}</span>
+                        </div>
+                    </motion.div>
                     <motion.h2
                         layoutId={`title-${attraction.id}`}
-                        className="text-3xl font-bold text-white shadow-sm leading-tight"
+                        className="text-3xl sm:text-4xl font-extrabold text-white shadow-sm leading-none tracking-tight"
                     >
                         {attraction.name}
                     </motion.h2>
@@ -189,71 +200,82 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
             </div>
 
             <motion.div
-                className="p-6 space-y-5"
+                className="p-6 sm:p-8 space-y-6 bg-white/50 dark:bg-slate-900/50 backdrop-blur-md flex-grow"
                 variants={containerVariants}
                 initial="hidden"
                 animate="visible"
             >
-                {/* Stats Row */}
-                <motion.div variants={itemVariants} className="flex flex-wrap gap-4 text-sm text-muted-text bg-gray-50 dark:bg-slate-800/50 p-4 rounded-xl">
-                    <div className="flex items-center gap-2">
-                        <Star className="text-yellow-400 fill-current" size={18} />
-                        <span className="font-bold text-text-primary text-base">{attraction.rating}</span>/5
+                {/* Info Grid */}
+                <motion.div variants={itemVariants} className="grid grid-cols-2 gap-4">
+                    <div className="bg-white/60 dark:bg-slate-800/60 p-4 rounded-2xl border border-white/40 dark:border-white/5 shadow-sm">
+                        <div className="flex items-center gap-2 text-primary mb-1">
+                            <Clock size={18} />
+                            <span className="text-xs font-bold uppercase tracking-wider">Hours</span>
+                        </div>
+                        <p className="font-semibold text-text-primary text-sm">{attraction.hours.open} - {attraction.hours.close}</p>
                     </div>
-                    <div className="w-px h-5 bg-gray-300 dark:bg-gray-600"></div>
-                    <div className="flex items-center gap-2">
-                        <Clock size={18} className="text-primary" />
-                        <span>{attraction.hours.open} - {attraction.hours.close}</span>
+                     <div className="bg-white/60 dark:bg-slate-800/60 p-4 rounded-2xl border border-white/40 dark:border-white/5 shadow-sm">
+                         <a
+                            href={attraction.website}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex flex-col h-full hover:opacity-70 transition-opacity"
+                         >
+                            <div className="flex items-center gap-2 text-secondary mb-1">
+                                <Globe size={18} />
+                                <span className="text-xs font-bold uppercase tracking-wider">Website</span>
+                            </div>
+                            <div className="flex items-center gap-1 font-semibold text-text-primary text-sm">
+                                <span>Visit Site</span>
+                                <ExternalLink size={12} />
+                            </div>
+                        </a>
                     </div>
                 </motion.div>
 
-                <motion.p variants={itemVariants} className="text-text-primary leading-relaxed text-base font-normal opacity-90">
-                    {attraction.description}
-                </motion.p>
-
-                {attraction.website && (
-                    <motion.a
-                        variants={itemVariants}
-                        href={attraction.website}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 text-primary hover:text-secondary font-medium transition-colors group"
-                    >
-                        <Globe size={18} />
-                        <span>Visit Official Website</span>
-                        <ArrowRight size={16} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-                    </motion.a>
-                )}
+                <motion.div variants={itemVariants}>
+                    <h3 className="text-lg font-bold text-text-primary mb-2">About</h3>
+                    <p className="text-text-primary/80 leading-relaxed text-base">
+                        {attraction.description}
+                    </p>
+                </motion.div>
 
                 {/* Thumbnails */}
                 {attraction.photos && attraction.photos.length > 1 && (
-                  <motion.div variants={itemVariants} className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide py-2">
-                    {attraction.photos.slice(1).map((photo, index) => (
-                      <img
-                        key={index}
-                        src={photo}
-                        alt={`${attraction.name} thumbnail ${index + 2}`}
-                        className="w-24 h-16 object-cover rounded-lg shadow-sm hover:scale-105 transition-transform cursor-pointer border-2 border-transparent hover:border-primary"
-                        onError={(e) => ((e.currentTarget as HTMLImageElement).style.display = 'none')}
-                      />
-                    ))}
+                  <motion.div variants={itemVariants}>
+                     <h3 className="text-sm font-bold text-muted-text mb-3 uppercase tracking-wider">Gallery</h3>
+                      <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide -mx-2 px-2">
+                        {attraction.photos.slice(1).map((photo, index) => (
+                        <motion.img
+                            whileHover={{ scale: 1.05, rotate: index % 2 === 0 ? 2 : -2 }}
+                            key={index}
+                            src={photo}
+                            alt={`${attraction.name} thumbnail ${index + 2}`}
+                            className="w-28 h-20 object-cover rounded-xl shadow-md cursor-zoom-in border-2 border-white dark:border-slate-700"
+                            onError={(e) => ((e.currentTarget as HTMLImageElement).style.display = 'none')}
+                        />
+                        ))}
+                      </div>
                   </motion.div>
                 )}
 
-                <motion.div variants={itemVariants} className="pt-2 flex flex-col gap-3">
+                <motion.div variants={itemVariants} className="pt-4 flex flex-col gap-3">
                     <motion.button
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       onClick={handleAddToItinerary}
                       disabled={isAttractionInItinerary(attraction.id)}
                       className={`
-                        w-full py-3.5 px-4 rounded-xl font-bold text-white shadow-lg shadow-primary/20 flex items-center justify-center gap-2 transition-all relative overflow-hidden
+                        w-full py-4 px-6 rounded-2xl font-bold text-white shadow-xl flex items-center justify-center gap-3 transition-all relative overflow-hidden group
                         ${isAttractionInItinerary(attraction.id)
-                            ? 'bg-green-500 cursor-default ring-4 ring-green-500/20'
-                            : 'bg-primary hover:bg-primary/90'
+                            ? 'bg-gradient-to-r from-green-500 to-emerald-600 cursor-default ring-4 ring-green-500/20'
+                            : 'bg-gradient-to-r from-primary to-indigo-600 hover:shadow-primary/40'
                         }
                       `}
                     >
+                         {/* Shine effect */}
+                        <div className="absolute top-0 -left-full w-full h-full bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12 group-hover:animate-shimmer" />
+
                         <AnimatePresence mode='wait'>
                           {isAttractionInItinerary(attraction.id) ? (
                               <motion.div
@@ -262,8 +284,8 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
                                 animate={{ scale: 1, opacity: 1 }}
                                 className="flex items-center gap-2"
                               >
-                                <Check size={20} strokeWidth={3} />
-                                <span>{justAdded ? "Added!" : "In Your Itinerary"}</span>
+                                <Check size={24} strokeWidth={3} />
+                                <span className="text-lg">{justAdded ? "Added to Trip!" : "In Your Itinerary"}</span>
                               </motion.div>
                           ) : (
                               <motion.div
@@ -272,8 +294,8 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
                                 animate={{ scale: 1, opacity: 1 }}
                                 className="flex items-center gap-2"
                               >
-                                <Plus size={20} strokeWidth={3} />
-                                <span>Add to Itinerary</span>
+                                <Plus size={24} strokeWidth={3} />
+                                <span className="text-lg">Add to Itinerary</span>
                               </motion.div>
                           )}
                         </AnimatePresence>
@@ -282,13 +304,23 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
                     <button
                       ref={lastFocusableElementRef}
                       onClick={handleClose}
-                      className="w-full py-3.5 px-4 rounded-xl font-medium text-muted-text hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+                      className="w-full py-3 px-4 rounded-xl font-medium text-muted-text hover:bg-gray-100/50 dark:hover:bg-slate-800/50 transition-colors"
                     >
                       Close Details
                     </button>
                 </motion.div>
             </motion.div>
           </motion.div>
+          <style>{`
+            @keyframes shimmer {
+                100% {
+                    left: 200%;
+                }
+            }
+            .animate-shimmer {
+                animation: shimmer 1.5s infinite;
+            }
+          `}</style>
         </div>
       )}
     </AnimatePresence>
