@@ -1,66 +1,76 @@
 import React from 'react';
 import { useItinerary } from '../context/ItineraryContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2, Map, Compass } from 'lucide-react';
+import { Trash2, Map, Compass, Ghost, Tent } from 'lucide-react';
 
 const ItineraryPanel = () => {
   const { itinerary, removeAttractionFromItinerary } = useItinerary();
 
   return (
-    <aside className="h-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl p-6 shadow-none overflow-y-auto flex flex-col border-l border-white/20">
-      <div className="flex items-center justify-between mb-8">
+    <aside className="h-full glass border-l border-white/20 p-6 shadow-2xl overflow-y-auto flex flex-col relative z-50">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-8 sticky top-0 bg-transparent z-10">
         <div className="flex items-center gap-3">
-            <div className="p-2 bg-primary/10 rounded-lg text-primary">
+            <div className="p-2.5 bg-primary/10 rounded-xl text-primary shadow-sm border border-primary/20">
                 <Compass size={24} />
             </div>
-            <h2 className="text-2xl font-bold text-text-primary dark:text-white">Trip Plan</h2>
+            <div>
+                 <h2 className="text-2xl font-extrabold text-text-primary dark:text-white tracking-tight">Your Trip</h2>
+                 <p className="text-xs text-muted-text font-medium">Plan your adventure</p>
+            </div>
         </div>
-        <span className="bg-primary text-white text-xs font-bold px-2.5 py-1 rounded-full">
+        <span className="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
             {itinerary.length}
         </span>
       </div>
 
+      {/* Content */}
       {itinerary.length === 0 ? (
         <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex-grow flex flex-col items-center justify-center text-center p-8 border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-2xl bg-white/50 dark:bg-slate-800/50"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2, type: 'spring' }}
+            className="flex-grow flex flex-col items-center justify-center text-center p-8 rounded-3xl bg-white/30 border border-white/40 dark:bg-slate-800/30 dark:border-white/10"
         >
-            <div className="bg-gray-100 dark:bg-slate-700 p-4 rounded-full mb-4">
-                <Map size={32} className="text-gray-400 dark:text-gray-500" />
-            </div>
-            <h3 className="text-lg font-semibold text-text-primary mb-2">Your Itinerary is Empty</h3>
-            <p className="text-muted-text text-sm max-w-[200px]">
-                Explore the map and add attractions to build your dream trip!
+            <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="bg-gradient-to-br from-primary/20 to-secondary/20 p-6 rounded-full mb-6 shadow-inner"
+            >
+                <Tent size={48} className="text-primary opacity-80" />
+            </motion.div>
+            <h3 className="text-xl font-bold text-text-primary mb-3">Time to Explore!</h3>
+            <p className="text-muted-text text-sm leading-relaxed max-w-[220px]">
+                Your itinerary is looking a bit empty. Browse the map and add some amazing places to your list.
             </p>
         </motion.div>
       ) : (
-        <ul className="space-y-4 pb-20 flex-grow">
+        <ul className="space-y-4 pb-24 flex-grow">
             <AnimatePresence mode="popLayout">
             {itinerary.map((attraction, index) => (
                 <motion.li
                     key={attraction.id}
                     layout
-                    initial={{ opacity: 0, scale: 0.9, x: -20 }}
+                    initial={{ opacity: 0, scale: 0.8, x: -50 }}
                     animate={{ opacity: 1, scale: 1, x: 0 }}
-                    exit={{ opacity: 0, scale: 0.9, x: 20 }}
-                    transition={{ type: 'spring', damping: 20, stiffness: 300, delay: index * 0.05 }}
-                    whileHover={{ scale: 1.02, backgroundColor: 'rgba(var(--color-background), 0.8)' }}
-                    className="bg-card-background dark:bg-slate-700 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-600 flex justify-between items-center group relative overflow-hidden"
+                    exit={{ opacity: 0, scale: 0.8, x: 50 }}
+                    transition={{ type: 'spring', damping: 25, stiffness: 300, delay: index * 0.05 }}
+                    whileHover={{ scale: 1.02, x: 5 }}
+                    className="bg-white/60 dark:bg-slate-800/60 p-4 rounded-2xl shadow-sm border border-white/50 dark:border-white/10 flex justify-between items-center group relative overflow-hidden backdrop-blur-sm cursor-grab active:cursor-grabbing"
                 >
                     <div className="flex-1 min-w-0 pr-4">
-                        <h4 className="font-semibold text-text-primary dark:text-white truncate">
+                        <h4 className="font-bold text-text-primary dark:text-white truncate text-base">
                             {attraction.name}
                         </h4>
-                        <span className="text-xs text-muted-text inline-block px-1.5 py-0.5 bg-gray-100 dark:bg-slate-600 rounded mt-1">
+                        <span className="text-xs font-semibold text-primary/80 uppercase tracking-wider inline-block mt-1">
                             {attraction.category}
                         </span>
                     </div>
                     <motion.button
-                        whileHover={{ scale: 1.1, rotate: 10 }}
+                        whileHover={{ scale: 1.2, rotate: 15, color: '#EF4444' }}
                         whileTap={{ scale: 0.9 }}
                         onClick={() => removeAttractionFromItinerary(attraction.id)}
-                        className="text-gray-400 hover:text-red-500 p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                        className="text-muted-text p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
                         aria-label={`Remove ${attraction.name} from itinerary`}
                     >
                         <Trash2 size={18} />
@@ -71,14 +81,16 @@ const ItineraryPanel = () => {
         </ul>
       )}
 
+      {/* Footer Actions */}
       {itinerary.length > 0 && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700"
+            className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white/90 to-transparent dark:from-slate-900 dark:via-slate-900/90 z-20"
           >
-              <button className="w-full py-3 bg-text-primary text-white rounded-xl font-bold shadow-lg hover:shadow-xl transition-all hover:-translate-y-1">
-                  Save Itinerary
+              <button className="w-full py-4 bg-text-primary text-white rounded-2xl font-bold shadow-xl hover:shadow-2xl transition-all hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2">
+                  <Map size={20} />
+                  Save & Share Itinerary
               </button>
           </motion.div>
       )}

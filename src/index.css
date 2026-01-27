@@ -1,23 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  /* Relaxing Pastel Theme - Refined */
-  --color-primary: 95, 180, 165; /* Vibrant Sage #5FB4A5 */
-  --color-secondary: 255, 180, 100; /* Soft Peach #FFB464 */
-  --color-background: 250, 249, 246; /* Off-White Cream #FAF9F6 */
-  --color-text: 44, 62, 80; /* Dark Slate #2C3E50 */
+  /* Morning Mist Theme - Dreamy & Polished */
+  --color-primary: 129, 140, 248; /* Indigo 400 */
+  --color-secondary: 244, 114, 182; /* Pink 400 */
+  --color-background: 248, 250, 252; /* Slate 50 */
+  --color-text: 51, 65, 85; /* Slate 700 */
   --color-card-background: 255, 255, 255; /* White */
   --color-muted-text: 100, 116, 139; /* Slate 500 */
-  --color-header-text: 44, 62, 80; /* Dark Slate */
+  --color-header-text: 51, 65, 85; /* Slate 700 */
 }
 
 .dark {
-  /* Muted Dark Theme - Refined */
-  --color-primary: 74, 133, 129; /* Muted Teal */
-  --color-secondary: 181, 109, 84; /* Muted Terracotta */
-  --color-background: 15, 23, 42; /* Darker Slate */
+  /* Deep Night Theme - Elegant & immersive */
+  --color-primary: 99, 102, 241; /* Indigo 500 */
+  --color-secondary: 236, 72, 153; /* Pink 500 */
+  --color-background: 15, 23, 42; /* Slate 900 */
   --color-text: 241, 245, 249; /* Slate 100 */
   --color-card-background: 30, 41, 59; /* Slate 800 */
   --color-muted-text: 148, 163, 184; /* Slate 400 */
@@ -30,43 +32,72 @@ html {
 
 body {
   background-color: rgb(var(--color-background));
-  background: radial-gradient(circle at top left, rgba(var(--color-primary), 0.1), transparent 70%),
-              radial-gradient(circle at bottom right, rgba(var(--color-secondary), 0.1), transparent 70%),
-              rgb(var(--color-background));
+  /* Subtle mesh gradient for depth */
+  background-image:
+    radial-gradient(at 0% 0%, rgba(var(--color-primary), 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(var(--color-secondary), 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(var(--color-primary), 0.1) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(var(--color-secondary), 0.1) 0px, transparent 50%);
   background-attachment: fixed;
   color: rgb(var(--color-text));
   transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden; /* Prevent horizontal scroll */
+  overflow-x: hidden;
 }
 
-/* Smooth transitions for common properties */
+/* Glassmorphism Utility */
+.glass {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+
+.dark .glass {
+  background: rgba(30, 41, 59, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Glass Panel (darker/stronger for modals) */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.dark .glass-panel {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Smooth transitions */
 a, button, input {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Custom Scrollbar Styling */
+/* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(var(--color-muted-text), 0.1);
-  border-radius: 5px;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(var(--color-primary), 0.5);
-  border-radius: 5px;
-  border: 2px solid transparent;
-  background-clip: content-box;
+  background: rgba(var(--color-muted-text), 0.3);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(var(--color-primary), 0.8);
+  background: rgba(var(--color-primary), 0.6);
 }
 
 /* Marker Pulse Animation */
