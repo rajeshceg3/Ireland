@@ -6,85 +6,108 @@
 
 :root {
   /* Morning Mist Theme - Dreamy & Polished */
-  --color-primary: 129, 140, 248; /* Indigo 400 */
-  --color-secondary: 244, 114, 182; /* Pink 400 */
+  /* Refined Palette: Soft, calming, yet accessible */
+  --color-primary: 99, 102, 241; /* Indigo 500 - Stronger for better contrast */
+  --color-primary-soft: 199, 210, 254; /* Indigo 200 - For backgrounds/accents */
+  --color-secondary: 236, 72, 153; /* Pink 500 */
+  --color-accent: 45, 212, 191; /* Teal 400 - Fresh minty accent */
+
   --color-background: 248, 250, 252; /* Slate 50 */
-  --color-text: 51, 65, 85; /* Slate 700 */
-  --color-card-background: 255, 255, 255; /* White */
+  --color-surface: 255, 255, 255; /* White */
+
+  --color-text: 30, 41, 59; /* Slate 800 - Better readability */
   --color-muted-text: 100, 116, 139; /* Slate 500 */
-  --color-header-text: 51, 65, 85; /* Slate 700 */
+  --color-header-text: 15, 23, 42; /* Slate 900 */
 }
 
 .dark {
-  /* Deep Night Theme - Elegant & immersive */
-  --color-primary: 99, 102, 241; /* Indigo 500 */
-  --color-secondary: 236, 72, 153; /* Pink 500 */
+  /* Deep Night Theme - Elegant & Immersive */
+  --color-primary: 129, 140, 248; /* Indigo 400 */
+  --color-primary-soft: 49, 46, 129; /* Indigo 900 */
+  --color-secondary: 244, 114, 182; /* Pink 400 */
+  --color-accent: 94, 234, 212; /* Teal 300 */
+
   --color-background: 15, 23, 42; /* Slate 900 */
+  --color-surface: 30, 41, 59; /* Slate 800 */
+
   --color-text: 241, 245, 249; /* Slate 100 */
-  --color-card-background: 30, 41, 59; /* Slate 800 */
   --color-muted-text: 148, 163, 184; /* Slate 400 */
-  --color-header-text: 241, 245, 249; /* Slate 100 */
+  --color-header-text: 248, 250, 252; /* Slate 50 */
 }
 
 html {
   scroll-behavior: smooth;
+  height: 100%;
 }
 
 body {
   background-color: rgb(var(--color-background));
-  /* Subtle mesh gradient for depth */
+  /* Subtle mesh gradient for depth - Ultra smooth */
   background-image:
-    radial-gradient(at 0% 0%, rgba(var(--color-primary), 0.15) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(var(--color-secondary), 0.15) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(var(--color-primary), 0.1) 0px, transparent 50%),
-    radial-gradient(at 0% 100%, rgba(var(--color-secondary), 0.1) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, rgba(var(--color-primary), 0.12) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(var(--color-secondary), 0.12) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(var(--color-primary), 0.08) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(var(--color-accent), 0.08) 0px, transparent 50%);
   background-attachment: fixed;
   color: rgb(var(--color-text));
   transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: 'Nunito', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
+  overflow: hidden; /* App handles scrolling internally */
 }
 
-/* Glassmorphism Utility */
+/* Premium Glassmorphism Utility */
 .glass {
-  background: rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 2px 4px -1px rgba(0, 0, 0, 0.03),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 .dark .glass {
-  background: rgba(30, 41, 59, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  background: rgba(30, 41, 59, 0.75);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.2),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
-/* Glass Panel (darker/stronger for modals) */
+/* Enhanced Glass Panel (modals/cards) */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(32px) saturate(180%);
+  -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04),
+    inset 0 0 20px rgba(255, 255, 255, 0.5);
 }
 
 .dark .glass-panel {
-  background: rgba(15, 23, 42, 0.9);
+  background: rgba(15, 23, 42, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.05);
 }
 
-/* Smooth transitions */
-a, button, input {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+/* Smooth transitions for all interactive elements */
+a, button, input, .transition-all-premium {
+  transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
 }
 
-/* Custom Scrollbar */
+/* Custom Slim Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -92,17 +115,31 @@ a, button, input {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(var(--color-muted-text), 0.3);
-  border-radius: 4px;
+  background: rgba(var(--color-muted-text), 0.2);
+  border-radius: 10px;
+  transition: background 0.3s;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(var(--color-primary), 0.6);
+  background: rgba(var(--color-primary), 0.5);
 }
 
-/* Marker Pulse Animation */
-.marker-pulse {
-  position: relative;
+/* Pulse Animation for Map Markers */
+@keyframes pulse-ring-premium {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0.5;
+    box-shadow: 0 0 0 0 rgba(var(--color-primary), 0.4);
+  }
+  70% {
+    transform: translate(-50%, -50%) scale(1.6);
+    opacity: 0;
+    box-shadow: 0 0 0 20px rgba(var(--color-primary), 0);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 0;
+  }
 }
 
 .marker-pulse::after {
@@ -114,18 +151,8 @@ a, button, input {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background: rgba(var(--color-primary), 0.6);
-  animation: pulse-ring 2s cubic-bezier(0.215, 0.61, 0.355, 1) infinite;
+  background: rgba(var(--color-primary), 0.4);
+  animation: pulse-ring-premium 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   z-index: -1;
-}
-
-@keyframes pulse-ring {
-  0% {
-    transform: translate(-50%, -50%) scale(0.8);
-    opacity: 0.8;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(2.5);
-    opacity: 0;
-  }
+  pointer-events: none;
 }
