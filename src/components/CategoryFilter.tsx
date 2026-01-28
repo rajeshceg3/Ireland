@@ -36,7 +36,7 @@ const CategoryFilter: React.FC<Props> = ({ selectedCategory, onSelectCategory })
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.6, type: 'spring' }}
         aria-label="Attraction Categories"
-        className="pointer-events-auto glass rounded-full p-1.5 max-w-full overflow-x-auto scrollbar-hide shadow-lg"
+        className="pointer-events-auto glass rounded-full p-1.5 max-w-full overflow-x-auto scrollbar-hide shadow-premium"
       >
         <div className="flex space-x-1 min-w-max">
           {ATTRACTION_CATEGORIES.map((category) => {
@@ -47,14 +47,14 @@ const CategoryFilter: React.FC<Props> = ({ selectedCategory, onSelectCategory })
                 onClick={() => onSelectCategory(category)}
                 aria-pressed={isSelected}
                 className={`
-                  relative flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all outline-none focus-visible:ring-2 focus-visible:ring-primary
-                  ${isSelected ? 'text-white shadow-md' : 'text-text-primary hover:text-primary hover:bg-white/40'}
+                  relative flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all outline-none focus-visible:ring-2 focus-visible:ring-primary/50
+                  ${isSelected ? 'text-white' : 'text-text-primary hover:text-primary hover:bg-surface/50'}
                 `}
               >
                 {isSelected && (
                   <motion.div
                     layoutId="activeCategory"
-                    className="absolute inset-0 bg-primary rounded-full shadow-inner"
+                    className="absolute inset-0 bg-primary rounded-full shadow-glow"
                     initial={false}
                     transition={{ type: "spring", stiffness: 400, damping: 30 }}
                   />
