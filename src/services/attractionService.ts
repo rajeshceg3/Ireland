@@ -13,7 +13,20 @@ export const fetchAllAttractions = async (): Promise<Attraction[]> => {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
   const data: Attraction[] = await response.json();
-  return data;
+
+  // Deduplicate attractions based on coordinates to prevent stacking markers
+  const seenCoordinates = new Set<string>();
+  const uniqueAttractions = data.filter(attraction => {
+    const coordKey = `${attraction.location.lat},${attraction.location.lng}`;
+    if (seenCoordinates.has(coordKey)) {
+      console.warn(`Duplicate attraction location detected and removed: ${attraction.name} (${coordKey})`);
+      return false;
+    }
+    seenCoordinates.add(coordKey);
+    return true;
+  });
+
+  return uniqueAttractions;
 };
 
 /**
