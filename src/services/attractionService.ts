@@ -7,26 +7,41 @@ const ATTRACTIONS_API_ENDPOINT = '/api/attractions.json';
  * @returns A promise that resolves to an array of Attraction objects.
  * @throws An error if the network response is not ok.
  */
-export const fetchAllAttractions = async (): Promise<Attraction[]> => {
-  const response = await fetch(ATTRACTIONS_API_ENDPOINT);
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
+let attractionsCache: Promise<Attraction[]> | null = null;
+
+export const fetchAllAttractions = (): Promise<Attraction[]> => {
+  if (attractionsCache) {
+    return attractionsCache;
   }
-  const data: Attraction[] = await response.json();
 
-  // Deduplicate attractions based on coordinates to prevent stacking markers
-  const seenCoordinates = new Set<string>();
-  const uniqueAttractions = data.filter(attraction => {
-    const coordKey = `${attraction.location.lat},${attraction.location.lng}`;
-    if (seenCoordinates.has(coordKey)) {
-      console.warn(`Duplicate attraction location detected and removed: ${attraction.name} (${coordKey})`);
-      return false;
+  attractionsCache = (async () => {
+    try {
+      const response = await fetch(ATTRACTIONS_API_ENDPOINT);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data: Attraction[] = await response.json();
+
+      // Deduplicate attractions based on coordinates to prevent stacking markers
+      const seenCoordinates = new Set<string>();
+      const uniqueAttractions = data.filter(attraction => {
+        const coordKey = `${attraction.location.lat},${attraction.location.lng}`;
+        if (seenCoordinates.has(coordKey)) {
+          console.warn(`Duplicate attraction location detected and removed: ${attraction.name} (${coordKey})`);
+          return false;
+        }
+        seenCoordinates.add(coordKey);
+        return true;
+      });
+
+      return uniqueAttractions;
+    } catch (error) {
+      attractionsCache = null; // Reset cache on error so retries work
+      throw error;
     }
-    seenCoordinates.add(coordKey);
-    return true;
-  });
+  })();
 
-  return uniqueAttractions;
+  return attractionsCache;
 };
 
 /**

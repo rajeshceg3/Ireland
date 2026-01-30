@@ -130,7 +130,12 @@ function App() {
   // --- Render Logic ---
   // Display loading message while API data is being fetched
   if (isLoadingApi) {
-    return <div className="flex justify-center items-center h-screen bg-background text-text-primary">Loading attractions...</div>;
+    return (
+      <div className="flex flex-col justify-center items-center h-screen bg-background text-text-primary gap-4">
+        <div className="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+        <p className="font-medium animate-pulse">Loading attractions...</p>
+      </div>
+    );
   }
   // Display error message if API call failed
   if (apiError) {

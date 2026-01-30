@@ -191,6 +191,7 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
                         </div>
                     </motion.div>
                     <motion.h2
+                        id="attraction-detail-title"
                         layoutId={`title-${attraction.id}`}
                         className="text-3xl sm:text-4xl font-extrabold text-white shadow-sm leading-none tracking-tight drop-shadow-md"
                     >

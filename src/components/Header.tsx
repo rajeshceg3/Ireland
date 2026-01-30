@@ -69,6 +69,7 @@ const Header: React.FC<Props> = ({ searchTerm, onSearchChange, theme, onToggleTh
               layout
               type="text"
               placeholder={isSearchFocused ? "Search for attractions..." : "Search..."}
+              aria-label="Search attractions"
               value={searchTerm}
               onChange={(e) => onSearchChange(e.target.value)}
               onFocus={() => setIsSearchFocused(true)}
@@ -89,6 +90,7 @@ const Header: React.FC<Props> = ({ searchTerm, onSearchChange, theme, onToggleTh
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.8 }}
                         onClick={() => onSearchChange('')}
+                        aria-label="Clear search"
                         className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full hover:bg-black/10 text-muted-text transition-colors"
                     >
                         <X size={14} />
@@ -104,7 +106,7 @@ const Header: React.FC<Props> = ({ searchTerm, onSearchChange, theme, onToggleTh
               whileTap={{ scale: 0.9 }}
               onClick={onToggleTheme}
               className="w-10 h-10 rounded-full bg-surface/50 dark:bg-slate-800/50 hover:bg-surface dark:hover:bg-slate-700 text-text-primary transition-all flex items-center justify-center shadow-sm border border-transparent hover:border-primary/30 backdrop-blur-md group"
-              aria-label="Toggle Theme"
+              aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
             >
               <motion.div
                 initial={false}
@@ -119,6 +121,7 @@ const Header: React.FC<Props> = ({ searchTerm, onSearchChange, theme, onToggleTh
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={onToggleItinerary}
+              aria-label={isItineraryOpen ? "Close Itinerary" : "Open Itinerary"}
               className={`
                 h-10 px-3 sm:px-5 rounded-full
                 bg-surface/50 dark:bg-slate-800/50
