@@ -5,9 +5,9 @@
 Browserslist: browsers data (caniuse-lite) is 7 months old. Please run:
   npx update-browserslist-db@latest
   Why you should do it regularly: https://github.com/browserslist/update-db#readme
-(node:3996) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:2909) [DEP_WEBPACK_DEV_SERVER_ON_AFTER_SETUP_MIDDLEWARE] DeprecationWarning: 'onAfterSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
 (Use `node --trace-deprecation ...` to show where the warning was created)
-(node:3996) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
+(node:2909) [DEP_WEBPACK_DEV_SERVER_ON_BEFORE_SETUP_MIDDLEWARE] DeprecationWarning: 'onBeforeSetupMiddleware' option is deprecated. Please use the 'setupMiddlewares' option.
 Starting the development server...
 
 Compiled successfully!
@@ -20,5 +20,18 @@ You can now view ireland-tourist-map in the browser.
 Note that the development build is not optimized.
 To create a production build, use npm run build.
 
+webpack compiled successfully
+ERROR in src/components/Map.test.tsx:66:9
+TS2322: Type '"Nature"' is not assignable to type '"All" | "Natural Site" | "Museum" | "Castle" | "Restaurant" | "Accommodation"'.
+    64 |         attractions={mockAttractions}
+    65 |         onMarkerClick={jest.fn()}
+  > 66 |         activeCategoryFilter="Nature" // Filter that doesn't match "Historical Sites"
+       |         ^^^^^^^^^^^^^^^^^^^^
+    67 |         searchTerm=""
+    68 |       />
+    69 |     );
+
+Compiling...
+Compiled successfully!
 webpack compiled successfully
 No issues found.

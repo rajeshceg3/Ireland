@@ -26,6 +26,6 @@ describe('Header', () => {
     expect(screen.getByPlaceholderText(/Search.../i)).toBeInTheDocument();
 
     // Check for the theme toggle button
-    expect(screen.getByLabelText(/Toggle Theme/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Switch to dark mode/i)).toBeInTheDocument();
   });
 });
