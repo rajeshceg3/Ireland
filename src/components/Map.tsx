@@ -9,15 +9,6 @@ import { MapPinOff } from 'lucide-react';
 import AttractionMarker from './AttractionMarker';
 import MapUpdater from './MapUpdater';
 
-
-// Fix for default icon issue with webpack
-delete (L.Icon.Default.prototype as any)._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
-  iconUrl: require('leaflet/dist/images/marker-icon.png'),
-  shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
-});
-
 interface MapComponentProps {
   attractions: Attraction[];
   onMarkerClick: (attraction: Attraction) => void;

@@ -15,6 +15,7 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
   const [imageError, setImageError] = useState(false);
   const [isMainImageLoading, setIsMainImageLoading] = useState(true);
   const [justAdded, setJustAdded] = useState(false);
+  const [failedThumbnailIndices, setFailedThumbnailIndices] = useState<Set<number>>(new Set());
 
   const modalRef = useRef<HTMLDivElement>(null);
   const firstFocusableElementRef = useRef<HTMLButtonElement>(null);
@@ -25,6 +26,7 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
       setImageError(false);
       setIsMainImageLoading(true);
       setJustAdded(false);
+      setFailedThumbnailIndices(new Set());
     }
   }, [attraction]);
 
@@ -247,14 +249,16 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
                      <h3 className="text-sm font-bold text-muted-text mb-3 uppercase tracking-wider">Gallery</h3>
                       <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide -mx-2 px-2">
                         {attraction.photos.slice(1).map((photo, index) => (
-                        <motion.img
-                            whileHover={{ scale: 1.05, rotate: index % 2 === 0 ? 2 : -2 }}
-                            key={index}
-                            src={photo}
-                            alt={`${attraction.name} thumbnail ${index + 2}`}
-                            className="w-28 h-20 object-cover rounded-xl shadow-md cursor-zoom-in border-2 border-white dark:border-slate-700 hover:shadow-lg transition-all"
-                            onError={(e) => ((e.currentTarget as HTMLImageElement).style.display = 'none')}
-                        />
+                          !failedThumbnailIndices.has(index) && (
+                            <motion.img
+                              whileHover={{ scale: 1.05, rotate: index % 2 === 0 ? 2 : -2 }}
+                              key={index}
+                              src={photo}
+                              alt={`${attraction.name} thumbnail ${index + 2}`}
+                              className="w-28 h-20 object-cover rounded-xl shadow-md cursor-zoom-in border-2 border-white dark:border-slate-700 hover:shadow-lg transition-all"
+                              onError={() => setFailedThumbnailIndices(prev => new Set(prev).add(index))}
+                            />
+                          )
                         ))}
                       </div>
                   </motion.div>
