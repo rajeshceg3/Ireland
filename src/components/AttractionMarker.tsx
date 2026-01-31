@@ -133,6 +133,7 @@ const AttractionMarker: React.FC<AttractionMarkerProps> = ({ attraction, onMarke
 
                 <button
                     ref={viewMoreButtonRef}
+                    autoFocus
                     onClick={() => onMarkerClick(attraction)}
                     className="w-full py-2 bg-primary text-white rounded-lg text-xs font-bold transition-all hover:bg-primary-soft hover:text-primary hover:shadow-lg active:scale-95 flex items-center justify-center group/btn relative overflow-hidden"
                 >

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Header from './components/Header';
 import MapComponent from './components/Map';
 import CategoryFilter from './components/CategoryFilter';
@@ -107,16 +107,16 @@ function App() {
   const toggleTheme = () => setTheme(prevTheme => (prevTheme === 'light' ? 'dark' : 'light'));
 
   // Opens the attraction detail modal and stores the triggering element for focus return
-  const handleOpenDetailCard = (attraction: Attraction) => {
+  const handleOpenDetailCard = useCallback((attraction: Attraction) => {
     triggeringElementRef.current = document.activeElement as HTMLElement;
     setSelectedAttraction(attraction);
-  };
+  }, []);
 
   // Closes the attraction detail modal
-  const handleCloseDetailCard = () => {
+  const handleCloseDetailCard = useCallback(() => {
     setSelectedAttraction(null);
     // Focus return is now handled by AttractionDetailCard itself using triggeringElementRef
-  };
+  }, []);
 
   // Handles selection of a new category filter
   const handleCategorySelect = (category: AttractionCategory) => {
