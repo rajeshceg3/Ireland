@@ -15,8 +15,8 @@ const ItineraryPanel = () => {
                 <Compass size={24} className="animate-spin-slow" />
             </div>
             <div>
-                 <h2 className="text-2xl font-extrabold text-text-primary dark:text-white tracking-tight">Your Trip</h2>
-                 <p className="text-xs text-muted-text font-bold uppercase tracking-wider">Plan your adventure</p>
+                 <h2 className="text-2xl font-extrabold text-slate-800 dark:text-white tracking-tight">Your Trip</h2>
+                 <p className="text-xs text-slate-500 font-bold uppercase tracking-wider">Plan your adventure</p>
             </div>
         </div>
         <span className="bg-primary text-white text-xs font-bold px-3 py-1.5 rounded-full shadow-glow">
@@ -39,8 +39,8 @@ const ItineraryPanel = () => {
             >
                 <Tent size={48} className="text-primary opacity-80" />
             </motion.div>
-            <h3 className="text-xl font-bold text-text-primary mb-3">Time to Explore!</h3>
-            <p className="text-muted-text text-sm leading-relaxed max-w-[220px]">
+            <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-3">Time to Explore!</h3>
+            <p className="text-slate-500 text-sm leading-relaxed max-w-[220px]">
                 Your itinerary is looking a bit empty. Browse the map and add some amazing places to your list.
             </p>
         </motion.div>
@@ -56,13 +56,13 @@ const ItineraryPanel = () => {
                     exit={{ opacity: 0, scale: 0.8, x: 50 }}
                     transition={{ type: 'spring', damping: 25, stiffness: 300, delay: index * 0.05 }}
                     whileHover={{ scale: 1.02, x: 5 }}
-                    className="bg-surface/60 dark:bg-slate-800/60 p-4 rounded-2xl shadow-sm border border-white/50 dark:border-white/10 flex justify-between items-center group relative overflow-hidden backdrop-blur-sm cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow"
+                    className="bg-white/60 dark:bg-slate-800/60 p-4 rounded-2xl shadow-sm border border-white/50 dark:border-white/10 flex justify-between items-center group relative overflow-hidden backdrop-blur-sm cursor-grab active:cursor-grabbing hover:shadow-md transition-shadow"
                 >
                     <div className="flex-1 min-w-0 pr-4">
-                        <h4 className="font-bold text-text-primary dark:text-white truncate text-base group-hover:text-primary transition-colors">
+                        <h4 className="font-bold text-slate-800 dark:text-white truncate text-base group-hover:text-primary transition-colors">
                             {attraction.name}
                         </h4>
-                        <span className="text-[10px] font-bold text-muted-text uppercase tracking-wider inline-block mt-1 bg-white/50 dark:bg-slate-700/50 px-2 py-0.5 rounded-full">
+                        <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider inline-block mt-1 bg-white/50 dark:bg-slate-700/50 px-2 py-0.5 rounded-full">
                             {attraction.category}
                         </span>
                     </div>
@@ -70,7 +70,7 @@ const ItineraryPanel = () => {
                         whileHover={{ scale: 1.2, rotate: 15, color: '#EF4444' }}
                         whileTap={{ scale: 0.9 }}
                         onClick={() => removeAttractionFromItinerary(attraction.id)}
-                        className="text-muted-text p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
+                        className="text-slate-400 p-2 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors"
                         aria-label={`Remove ${attraction.name} from itinerary`}
                     >
                         <Trash2 size={18} />
@@ -94,7 +94,7 @@ const ItineraryPanel = () => {
               <motion.button
                 whileHover={{ scale: 1.02, boxShadow: "0 10px 30px -10px rgba(var(--color-primary), 0.5)" }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full py-4 bg-text-primary text-white rounded-2xl font-bold shadow-xl flex items-center justify-center gap-2 group relative overflow-hidden"
+                className="w-full py-4 bg-slate-800 text-white rounded-2xl font-bold shadow-xl flex items-center justify-center gap-2 group relative overflow-hidden"
               >
                   <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <span className="relative z-10 flex items-center gap-2">

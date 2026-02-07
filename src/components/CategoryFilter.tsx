@@ -42,9 +42,11 @@ const CategoryFilter: React.FC<Props> = ({ selectedCategory, onSelectCategory })
           {ATTRACTION_CATEGORIES.map((category) => {
             const isSelected = selectedCategory === category;
             return (
-              <button
+              <motion.button
                 key={category}
                 onClick={() => onSelectCategory(category)}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 aria-pressed={isSelected}
                 className={`
                   relative flex items-center gap-2 px-4 py-2 rounded-full text-sm font-bold transition-all outline-none focus-visible:ring-2 focus-visible:ring-primary/50
@@ -63,7 +65,7 @@ const CategoryFilter: React.FC<Props> = ({ selectedCategory, onSelectCategory })
                   {getCategoryIcon(category)}
                   {category}
                 </span>
-              </button>
+              </motion.button>
             );
           })}
         </div>

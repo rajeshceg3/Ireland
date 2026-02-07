@@ -30,29 +30,27 @@ const AttractionMarker: React.FC<AttractionMarkerProps> = ({ attraction, onMarke
     return L.divIcon({
       className: 'bg-transparent border-none',
       html: `
-        <div class="relative group cursor-pointer flex justify-center items-center w-12 h-12 marker-pulse">
+        <div class="relative group cursor-pointer flex justify-center items-center w-12 h-12 animate-pop-in">
 
-          <!-- Pulsing Ring (handled by CSS class now, but adding extra layer) -->
-          <div class="absolute inset-0 bg-primary/20 rounded-full animate-pulse-slow scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          <!-- Pulsing Ring -->
+          <div class="absolute inset-0 bg-primary/30 rounded-full animate-pulse-soft scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
 
           <!-- Main Pin Body -->
           <div class="relative z-10 transform transition-all duration-300 cubic-bezier(0.175, 0.885, 0.32, 1.275) group-hover:scale-125 group-hover:-translate-y-2 origin-bottom">
-            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-lg filter">
+            <svg width="44" height="44" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-shadow-lg filter">
                 <path d="M20 0C11.1634 0 4 7.16344 4 16C4 26.5 20 40 20 40C20 40 36 26.5 36 16C36 7.16344 28.8366 0 20 0Z" fill="url(#paint0_linear_${attraction.id})"/>
                 <circle cx="20" cy="16" r="6" fill="white"/>
                 <defs>
                     <linearGradient id="paint0_linear_${attraction.id}" x1="20" y1="0" x2="20" y2="40" gradientUnits="userSpaceOnUse">
-                        <stop stop-color="#818CF8"/>
-                        <stop offset="1" stop-color="#6366F1"/>
+                        <stop stop-color="#A78BFA"/> <!-- Soft Lavender -->
+                        <stop offset="1" stop-color="#F472B6"/> <!-- Soft Pink -->
                     </linearGradient>
                 </defs>
             </svg>
-
-             <!-- Category Icon Placeholder (optional) -->
           </div>
 
           <!-- Shadow -->
-          <div class="absolute bottom-1 w-4 h-1 bg-black/30 blur-[2px] rounded-full transition-all group-hover:w-6 group-hover:blur-[3px] group-hover:bg-black/20"></div>
+          <div class="absolute bottom-1 w-4 h-1 bg-black/20 blur-[2px] rounded-full transition-all group-hover:w-6 group-hover:blur-[3px] group-hover:bg-black/10"></div>
 
         </div>
       `,
@@ -123,19 +121,19 @@ const AttractionMarker: React.FC<AttractionMarkerProps> = ({ attraction, onMarke
 
             {/* Content Section */}
             <div className="p-4 bg-white/50 dark:bg-slate-900/50 backdrop-blur-xl">
-                <h3 className="font-bold text-sm mb-1.5 line-clamp-2 leading-snug text-text-primary">
+                <h3 className="font-bold text-sm mb-1.5 line-clamp-2 leading-snug text-slate-800 dark:text-slate-100">
                     {attraction.name}
                 </h3>
                 <div className="flex items-center gap-1 mb-3">
                     <span className="text-yellow-400 text-xs drop-shadow-sm">★</span>
-                    <span className="text-xs font-bold text-muted-text">{attraction.rating}</span>
+                    <span className="text-xs font-bold text-slate-500">{attraction.rating}</span>
                 </div>
 
                 <button
                     ref={viewMoreButtonRef}
                     autoFocus
                     onClick={() => onMarkerClick(attraction)}
-                    className="w-full py-2 bg-primary text-white rounded-lg text-xs font-bold transition-all hover:bg-primary-soft hover:text-primary hover:shadow-lg active:scale-95 flex items-center justify-center group/btn relative overflow-hidden"
+                    className="w-full py-2 bg-primary text-white rounded-lg text-xs font-bold transition-all hover:bg-primary/90 hover:shadow-lg active:scale-95 flex items-center justify-center group/btn relative overflow-hidden"
                 >
                     <span className="relative z-10">View Details</span>
                     <div className="absolute inset-0 bg-white/20 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300"/>
