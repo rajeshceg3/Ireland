@@ -1,7 +1,6 @@
 import React, { useMemo } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
-import L from 'leaflet';
 import { Attraction } from '../types/attraction';
 import { AttractionCategory } from '../config/categories';
 import { MapPinOff } from 'lucide-react';
