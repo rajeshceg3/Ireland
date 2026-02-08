@@ -5,14 +5,14 @@
 @tailwind utilities;
 
 :root {
-  /* Morning Mist Theme - Dreamy & Polished */
+  /* Relaxing Pastel Theme - Joyful & Immersive */
   /* Refined Palette: Soft, calming, yet accessible */
-  --color-primary: 99, 102, 241; /* Indigo 500 - Stronger for better contrast */
-  --color-primary-soft: 199, 210, 254; /* Indigo 200 - For backgrounds/accents */
-  --color-secondary: 236, 72, 153; /* Pink 500 */
-  --color-accent: 45, 212, 191; /* Teal 400 - Fresh minty accent */
+  --color-primary: 167, 139, 250; /* Soft Lavender (Violet 400) */
+  --color-primary-soft: 221, 214, 254; /* Lavender Mist (Violet 200) */
+  --color-secondary: 244, 114, 182; /* Soft Pink (Pink 400) */
+  --color-accent: 45, 212, 191; /* Mint Green (Teal 400) */
 
-  --color-background: 248, 250, 252; /* Slate 50 */
+  --color-background: 248, 250, 252; /* Cream/Off-white (Slate 50) */
   --color-surface: 255, 255, 255; /* White */
 
   --color-text: 30, 41, 59; /* Slate 800 - Better readability */
@@ -22,10 +22,10 @@
 
 .dark {
   /* Deep Night Theme - Elegant & Immersive */
-  --color-primary: 129, 140, 248; /* Indigo 400 */
-  --color-primary-soft: 49, 46, 129; /* Indigo 900 */
-  --color-secondary: 244, 114, 182; /* Pink 400 */
-  --color-accent: 94, 234, 212; /* Teal 300 */
+  --color-primary: 139, 92, 246; /* Violet 500 */
+  --color-primary-soft: 76, 29, 149; /* Violet 900 */
+  --color-secondary: 236, 72, 153; /* Pink 500 */
+  --color-accent: 20, 184, 166; /* Teal 500 */
 
   --color-background: 15, 23, 42; /* Slate 900 */
   --color-surface: 30, 41, 59; /* Slate 800 */
@@ -44,10 +44,10 @@ body {
   background-color: rgb(var(--color-background));
   /* Subtle mesh gradient for depth - Ultra smooth */
   background-image:
-    radial-gradient(at 0% 0%, rgba(var(--color-primary), 0.12) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, rgba(var(--color-secondary), 0.12) 0px, transparent 50%),
-    radial-gradient(at 100% 100%, rgba(var(--color-primary), 0.08) 0px, transparent 50%),
-    radial-gradient(at 0% 100%, rgba(var(--color-accent), 0.08) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, rgba(var(--color-primary), 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(var(--color-secondary), 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 100%, rgba(var(--color-primary), 0.1) 0px, transparent 50%),
+    radial-gradient(at 0% 100%, rgba(var(--color-accent), 0.1) 0px, transparent 50%);
   background-attachment: fixed;
   color: rgb(var(--color-text));
   transition: background-color 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -59,41 +59,40 @@ body {
 
 /* Premium Glassmorphism Utility */
 .glass {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.05),
-    0 2px 4px -1px rgba(0, 0, 0, 0.03),
+    0 8px 32px 0 rgba(31, 38, 135, 0.07),
     inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
 .dark .glass {
-  background: rgba(30, 41, 59, 0.75);
+  background: rgba(30, 41, 59, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
-    0 4px 6px -1px rgba(0, 0, 0, 0.2),
+    0 8px 32px 0 rgba(0, 0, 0, 0.2),
     inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 /* Enhanced Glass Panel (modals/cards) */
 .glass-panel {
-  background: rgba(255, 255, 255, 0.9);
-  backdrop-filter: blur(32px) saturate(180%);
-  -webkit-backdrop-filter: blur(32px) saturate(180%);
-  border: 1px solid rgba(255, 255, 255, 0.6);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(40px) saturate(200%);
+  -webkit-backdrop-filter: blur(40px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.5);
   box-shadow:
-    0 20px 25px -5px rgba(0, 0, 0, 0.1),
-    0 10px 10px -5px rgba(0, 0, 0, 0.04),
-    inset 0 0 20px rgba(255, 255, 255, 0.5);
+    0 25px 50px -12px rgba(0, 0, 0, 0.15),
+    0 10px 15px -3px rgba(0, 0, 0, 0.05),
+    inset 0 0 20px rgba(255, 255, 255, 0.6);
 }
 
 .dark .glass-panel {
   background: rgba(15, 23, 42, 0.85);
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow:
-    0 20px 25px -5px rgba(0, 0, 0, 0.3),
+    0 25px 50px -12px rgba(0, 0, 0, 0.4),
     inset 0 0 20px rgba(255, 255, 255, 0.05);
 }
 

@@ -19,7 +19,7 @@ const Header: React.FC<Props> = ({ searchTerm, onSearchChange, theme, onToggleTh
       initial={{ y: -100, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-      className="fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 z-50 glass rounded-full px-2 py-2 sm:px-4 sm:py-2 w-[95%] sm:w-auto max-w-5xl flex flex-row justify-between items-center gap-2 sm:gap-6 shadow-premium transition-all duration-500 hover:shadow-glow/20"
+      className="fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 z-50 glass rounded-full px-2 py-2 sm:px-4 sm:py-2 w-[95%] sm:w-auto max-w-5xl flex flex-row justify-between items-center gap-2 sm:gap-6 shadow-premium transition-all duration-500 hover:shadow-glow/20 border-b border-white/20"
     >
         {/* Logo Section */}
         <div className="flex items-center gap-2 sm:gap-3 shrink-0 pl-2">
@@ -29,7 +29,7 @@ const Header: React.FC<Props> = ({ searchTerm, onSearchChange, theme, onToggleTh
                 transition={{ delay: 0.2, type: 'spring' }}
                 whileHover={{ rotate: 360, scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
-                className="text-primary bg-primary/10 p-2 rounded-full cursor-pointer"
+                className="text-primary bg-primary/10 p-2 rounded-full cursor-pointer ring-1 ring-primary/20"
             >
                 <Compass className="w-5 h-5 sm:w-6 sm:h-6" strokeWidth={2.5} />
             </motion.div>
@@ -38,7 +38,7 @@ const Header: React.FC<Props> = ({ searchTerm, onSearchChange, theme, onToggleTh
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="text-base sm:text-lg font-extrabold tracking-tight text-text-primary whitespace-nowrap hidden sm:block"
+                  className="text-base sm:text-lg font-extrabold tracking-tighter text-text-primary whitespace-nowrap hidden sm:block bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary"
                 >
                   Ireland Tourist Map
                 </motion.h1>
@@ -46,7 +46,7 @@ const Header: React.FC<Props> = ({ searchTerm, onSearchChange, theme, onToggleTh
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
                   transition={{ delay: 0.3 }}
-                  className="text-sm font-extrabold tracking-tight text-text-primary whitespace-nowrap sm:hidden"
+                  className="text-sm font-extrabold tracking-tighter text-text-primary whitespace-nowrap sm:hidden bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary"
                 >
                   Ireland Map
                 </motion.h1>
@@ -67,6 +67,7 @@ const Header: React.FC<Props> = ({ searchTerm, onSearchChange, theme, onToggleTh
             />
             <motion.input
               layout
+              whileFocus={{ scale: 1.02 }}
               type="text"
               placeholder={isSearchFocused ? "Search for attractions..." : "Search..."}
               aria-label="Search attractions"
@@ -75,12 +76,12 @@ const Header: React.FC<Props> = ({ searchTerm, onSearchChange, theme, onToggleTh
               onFocus={() => setIsSearchFocused(true)}
               onBlur={() => setIsSearchFocused(false)}
               className={`
-                pl-9 pr-8 py-2 rounded-full text-sm font-medium text-text-primary
+                pl-9 pr-8 py-2 rounded-full text-sm font-bold text-text-primary
                 bg-surface/50 dark:bg-slate-800/50
                 border border-transparent focus:border-primary/30
                 outline-none focus:ring-2 focus:ring-primary/20
                 w-full h-full transition-all shadow-inner backdrop-blur-md
-                placeholder:text-muted-text/70
+                placeholder:text-muted-text/70 placeholder:font-medium
               `}
             />
              <AnimatePresence>
@@ -113,7 +114,7 @@ const Header: React.FC<Props> = ({ searchTerm, onSearchChange, theme, onToggleTh
                 animate={{ rotate: theme === 'dark' ? 180 : 0 }}
                 transition={{ duration: 0.5, type: 'spring' }}
               >
-                {theme === 'light' ? <Moon size={18} className="text-primary group-hover:drop-shadow-[0_0_8px_rgba(99,102,241,0.5)]" /> : <Sun size={18} className="text-amber-400 group-hover:drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" />}
+                {theme === 'light' ? <Moon size={18} className="text-primary group-hover:drop-shadow-[0_0_8px_rgba(167,139,250,0.5)]" /> : <Sun size={18} className="text-amber-400 group-hover:drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]" />}
               </motion.div>
             </motion.button>
 
