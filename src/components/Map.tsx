@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { MapContainer, TileLayer } from 'react-leaflet';
+import React, { useMemo, useState } from 'react';
+import { MapContainer, TileLayer, AttributionControl } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Attraction } from '../types/attraction';
 import { AttractionCategory } from '../config/categories';
@@ -21,6 +21,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
   activeCategoryFilter,
   searchTerm
 }) => {
+  const [tileError, setTileError] = useState(false);
   const attractionsToDisplay = useMemo(() => {
     let filtered = activeCategoryFilter === "All"
       ? attractions
@@ -36,6 +37,7 @@ const MapComponent: React.FC<MapComponentProps> = ({
 
   return (
     <>
+      {tileError && <div role="status" className="absolute bottom-8 left-3 z-[1100] max-w-[280px] rounded-lg bg-white p-3 text-sm text-gray-800 shadow">Map tiles could not load. Your itinerary is unchanged. Check your connection and reload to try again.</div>}
       {attractionsToDisplay.length === 0 && (
         <div className="absolute inset-0 z-[1001] flex flex-col justify-center items-center h-full text-muted-text text-lg p-6 text-center bg-white/30 backdrop-blur-sm pointer-events-none">
           <div className="bg-white/80 p-8 rounded-2xl shadow-xl backdrop-blur-md pointer-events-auto">
@@ -47,11 +49,16 @@ const MapComponent: React.FC<MapComponentProps> = ({
           </div>
         </div>
       )}
-      <MapContainer center={[53.4, -7.9]} zoom={7} style={{ height: '100%', width: '100%' }} className="z-0">
+      <MapContainer center={[53.4, -7.9]} zoom={7} attributionControl={false} style={{ height: '100%', width: '100%' }} className="z-0">
         <TileLayer
-          url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+          maxZoom={19}
+          updateWhenIdle={true}
+          keepBuffer={1}
+          eventHandlers={{ tileerror: () => setTileError(true) }}
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
+        <AttributionControl position="bottomleft" />
         {attractionsToDisplay.map(attraction => (
           <AttractionMarker
             key={attraction.id}

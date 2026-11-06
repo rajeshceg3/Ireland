@@ -6,7 +6,8 @@ import { Attraction } from '../types/attraction';
 // Mock react-leaflet
 jest.mock('react-leaflet', () => ({
   MapContainer: ({ children }: { children: React.ReactNode }) => <div data-testid="map-container">{children}</div>,
-  TileLayer: () => <div data-testid="tile-layer" />,
+  TileLayer: (props: any) => <div data-testid="tile-layer" data-url={props.url} data-attribution={props.attribution} />,
+  AttributionControl: () => <div data-testid="attribution-control" />,
   Marker: () => <div data-testid="marker" />,
   Popup: () => <div data-testid="popup" />,
   useMap: () => ({ fitBounds: jest.fn() }),
@@ -54,6 +55,8 @@ describe('MapComponent', () => {
     );
 
     expect(screen.getByTestId('map-container')).toBeInTheDocument();
+    expect(screen.getByTestId('tile-layer')).toHaveAttribute('data-url','https://tile.openstreetmap.org/{z}/{x}/{y}.png');
+    expect(screen.getByTestId('tile-layer').getAttribute('data-attribution')).toContain('OpenStreetMap');
     expect(screen.getByTestId('attraction-marker')).toBeInTheDocument();
     expect(screen.queryByText(/No attractions found/i)).not.toBeInTheDocument();
   });
