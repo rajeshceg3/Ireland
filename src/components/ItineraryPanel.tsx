@@ -4,10 +4,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Trash2, Compass, Tent, Share2 } from 'lucide-react';
 
 const ItineraryPanel = () => {
-  const { itinerary, removeAttractionFromItinerary } = useItinerary();
+  const { itinerary, removeAttractionFromItinerary, saveStatus, exportRecovery } = useItinerary();
 
   return (
-    <aside className="h-full glass-panel border-l border-white/40 p-6 shadow-2xl overflow-y-auto flex flex-col relative z-50">
+    <aside className="h-full glass-panel border-l border-white/40 p-6 pt-24 md:pt-6 shadow-2xl overflow-y-auto flex flex-col relative z-50">
       {/* Header */}
       <div className="flex items-center justify-between mb-8 sticky top-0 bg-transparent z-10 backdrop-blur-xl -mx-6 px-6 py-4 border-b border-white/20">
         <div className="flex items-center gap-3">
@@ -24,6 +24,12 @@ const ItineraryPanel = () => {
         </span>
       </div>
 
+      <div className="mb-5 text-sm leading-relaxed p-3 bg-white/80 rounded-xl text-slate-800">
+        <p role="status">{saveStatus}</p>
+        <button onClick={exportRecovery} className="my-2 p-3 border rounded-lg font-bold">Download recovery file</button>
+        <a href="https://saved-apps.vercel.app/" target="_blank" rel="noopener noreferrer" className="block underline p-2">Open private saved-apps home</a>
+        <p>Choose your recovery file there, press Import selected file, then wait for Cloud save confirmed. Nothing uploads automatically.</p>
+      </div>
       {/* Content */}
       {itinerary.length === 0 ? (
         <motion.div
@@ -94,12 +100,13 @@ const ItineraryPanel = () => {
               <motion.button
                 whileHover={{ scale: 1.02, boxShadow: "0 10px 30px -10px rgba(var(--color-primary), 0.5)" }}
                 whileTap={{ scale: 0.98 }}
+                onClick={exportRecovery}
                 className="w-full py-4 bg-slate-800 text-white rounded-2xl font-bold shadow-xl flex items-center justify-center gap-2 group relative overflow-hidden"
               >
                   <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   <span className="relative z-10 flex items-center gap-2">
                     <Share2 size={20} />
-                    Save & Share Itinerary
+                    Download private recovery file
                   </span>
               </motion.button>
           </motion.div>

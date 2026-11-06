@@ -16,8 +16,8 @@ const Header: React.FC<Props> = ({ searchTerm, onSearchChange, theme, onToggleTh
 
   return (
     <motion.header
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
+      initial={{ x: '-50%', y: -100, opacity: 0 }}
+      animate={{ x: '-50%', y: 0, opacity: 1 }}
       transition={{ type: 'spring', stiffness: 100, damping: 20 }}
       className="fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 z-50 glass rounded-full px-2 py-2 sm:px-4 sm:py-2 w-[95%] sm:w-auto max-w-5xl flex flex-row justify-between items-center gap-2 sm:gap-6 shadow-premium transition-all duration-500 hover:shadow-glow/20 border-b border-white/20"
     >
