@@ -1,0 +1,2 @@
+import { Attraction } from '../types/attraction';
+export function parseItineraryRestore(text:string):Attraction[]{const d=JSON.parse(text),v=d.value;if(d.schema!==1||d.app!=='ireland'||d.kind!=='selected-version-restore'||!Array.isArray(v)||v.length>100||new Set(v.map((x:any)=>x?.id)).size!==v.length||v.some((x:any)=>!x||typeof x.id!=='string'||!x.id||x.id.length>150||typeof x.name!=='string'||!x.name||x.name.length>300)||JSON.stringify(v).length>50000)throw Error('Invalid Ireland selected version');return v}

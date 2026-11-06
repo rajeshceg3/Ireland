@@ -6,6 +6,7 @@ interface ItineraryContextType {
   itinerary: Attraction[];
   saveStatus: string;
   exportRecovery: () => void;
+  restoreSelected: (items: Attraction[]) => boolean;
   addAttractionToItinerary: (attraction: Attraction) => void;
   removeAttractionFromItinerary: (attractionId: string) => void;
   isAttractionInItinerary: (attractionId: string) => boolean;
@@ -40,6 +41,8 @@ export const ItineraryProvider = ({ children }: ItineraryProviderProps) => {
   useEffect(()=>{if(broken.current){setSaveStatus('Unreadable earlier itinerary preserved. Editing is blocked. Export recovery before continuing in another browser.');return}try{localStorage.setItem(key,JSON.stringify(itinerary));setSaveStatus('Browser recovery copy saved. Not cloud-saved: download and import into the private home to keep it beyond this browser.')}catch{setSaveStatus('Browser save failed. Keep this page open and download a recovery copy now.')}},[itinerary]);
   const exportRecovery=()=>{try{const raw=broken.current?localStorage.getItem(key):JSON.stringify(itinerary);const blob=new Blob([JSON.stringify({schema:1,app:'ireland',raw},null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ireland-itinerary-recovery.json';a.click();URL.revokeObjectURL(a.href);}catch{setSaveStatus('Recovery download failed. Keep this page open.')}};
 
+  const restoreSelected=(items:Attraction[])=>{if(broken.current)return false;try{const prior=localStorage.getItem(key);localStorage.setItem('ireland-before-restore.v1',JSON.stringify({schema:1,app:'ireland',raw:prior}));exportRecovery();localStorage.setItem(key,JSON.stringify(items));setItinerary(items);return true}catch{setSaveStatus('Restore failed. Earlier recovery copy is kept; do not close this browser.');return false}};
+
 
   const addAttractionToItinerary = (attraction: Attraction) => {
     if(broken.current){setSaveStatus('Editing blocked: unreadable itinerary preserved. Export recovery first.');return}
@@ -61,7 +64,7 @@ export const ItineraryProvider = ({ children }: ItineraryProviderProps) => {
   };
 
   const value = {
-    itinerary,saveStatus,exportRecovery,
+    itinerary,saveStatus,exportRecovery,restoreSelected,
     addAttractionToItinerary,
     removeAttractionFromItinerary,
     isAttractionInItinerary,

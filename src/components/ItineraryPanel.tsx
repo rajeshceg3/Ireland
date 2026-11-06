@@ -1,11 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { parseItineraryRestore } from '../context/restore';
+import { Attraction } from '../types/attraction';
 import { useItinerary } from '../context/ItineraryContext';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Trash2, Compass, Tent, Share2 } from 'lucide-react';
 
 const ItineraryPanel = () => {
-  const { itinerary, removeAttractionFromItinerary, saveStatus, exportRecovery } = useItinerary();
+  const { itinerary, removeAttractionFromItinerary, saveStatus, exportRecovery, restoreSelected } = useItinerary();
 
+  const [selected,setSelected]=useState<Attraction[]|null>(null);
+  const [restoreStatus,setRestoreStatus]=useState('');
+  const choose=async(e:React.ChangeEvent<HTMLInputElement>)=>{setSelected(null);try{const f=e.target.files?.[0];if(!f||f.size>250000)throw Error();const v=parseItineraryRestore(await f.text());setSelected(v);setRestoreStatus(v.length?`Selected ordered version: ${v.map((x:any)=>x.name).join(' → ')}. Confirm to replace this browser itinerary.`:'Selected empty version. Confirming explicitly removes all current stops.')}catch{setRestoreStatus('Restore not accepted. Wrong app or malformed file. Existing itinerary is unchanged.')}};
   return (
     <aside className="h-full glass-panel border-l border-white/40 p-6 pt-24 shadow-2xl overflow-y-auto flex flex-col relative z-50">
       {/* Header */}
@@ -30,6 +35,7 @@ const ItineraryPanel = () => {
         <a href="https://saved-apps.vercel.app/" target="_blank" rel="noopener noreferrer" className="block underline p-2">Open private saved-apps home</a>
         <p>Choose your recovery file there, press Import selected file, then wait for Cloud save confirmed. Nothing uploads automatically.</p>
       </div>
+      <section className="mb-5 p-3 bg-white/80 rounded-xl text-sm leading-relaxed text-slate-800"><h3 className="font-bold">Restore a private itinerary version</h3><p>Export a selected version from the private home. Choose it here, review, then confirm. This replaces this browser itinerary, including an explicitly empty version. A prior recovery copy is kept and downloaded first.</p><label className="block py-2">Choose itinerary restore file<input type="file" accept=".json,application/json" onChange={choose} className="block max-w-full" /></label><p role="status">{restoreStatus}</p><button disabled={selected===null} onClick={()=>{if(selected!==null&&restoreSelected(selected)){setSelected(null);setRestoreStatus('Selected itinerary restored in this browser. This does not sync new changes to the private home.')}}} className="p-3 border rounded-lg disabled:opacity-50">Keep prior copy and restore selected itinerary</button></section>
       {/* Content */}
       {itinerary.length === 0 ? (
         <motion.div
@@ -95,7 +101,7 @@ const ItineraryPanel = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 100 }}
             transition={{ type: 'spring', damping: 20 }}
-            className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-white via-white/95 to-transparent dark:from-slate-900 dark:via-slate-900/95 z-20"
+            className="relative mt-auto p-6 bg-gradient-to-t from-white via-white/95 to-transparent dark:from-slate-900 dark:via-slate-900/95 z-20"
           >
               <motion.button
                 whileHover={{ scale: 1.02, boxShadow: "0 10px 30px -10px rgba(var(--color-primary), 0.5)" }}
