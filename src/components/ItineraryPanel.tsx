@@ -7,7 +7,7 @@ const ItineraryPanel = () => {
   const { itinerary, removeAttractionFromItinerary, saveStatus, exportRecovery } = useItinerary();
 
   return (
-    <aside className="h-full glass-panel border-l border-white/40 p-6 pt-24 md:pt-6 shadow-2xl overflow-y-auto flex flex-col relative z-50">
+    <aside className="h-full glass-panel border-l border-white/40 p-6 pt-24 shadow-2xl overflow-y-auto flex flex-col relative z-50">
       {/* Header */}
       <div className="flex items-center justify-between mb-8 sticky top-0 bg-transparent z-10 backdrop-blur-xl -mx-6 px-6 py-4 border-b border-white/20">
         <div className="flex items-center gap-3">
