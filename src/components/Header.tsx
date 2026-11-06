@@ -54,12 +54,12 @@ const Header: React.FC<Props> = ({ searchTerm, onSearchChange, theme, onToggleTh
         </div>
 
       {/* Right Section: Search & Actions */}
-      <div className="flex items-center gap-2 sm:gap-3 justify-end flex-grow sm:flex-grow-0">
+      <div className="flex items-center gap-2 sm:gap-3 justify-end flex-grow sm:flex-grow-0 min-w-0">
 
         {/* Animated Search Bar */}
         <motion.div
           layout
-          className={`relative group flex items-center transition-all duration-500 ease-out-expo ${isSearchFocused || searchTerm ? 'flex-grow sm:w-72' : 'w-10 sm:w-64'} h-10`}
+          className={`relative group flex items-center min-w-0 shrink transition-all duration-500 ease-out-expo ${isSearchFocused || searchTerm ? 'flex-grow min-w-0 sm:w-72' : 'w-10 sm:w-64'} h-10`}
         >
             <Search
                 className={`absolute left-3 top-1/2 transform -translate-y-1/2 transition-colors duration-300 z-10 ${isSearchFocused ? 'text-primary' : 'text-muted-text'}`}
@@ -80,7 +80,7 @@ const Header: React.FC<Props> = ({ searchTerm, onSearchChange, theme, onToggleTh
                 bg-surface/50 dark:bg-slate-800/50
                 border border-transparent focus:border-primary/30
                 outline-none focus:ring-2 focus:ring-primary/20
-                w-full h-full transition-all shadow-inner backdrop-blur-md
+                w-full min-w-0 h-full transition-all shadow-inner backdrop-blur-md
                 placeholder:text-muted-text/70 placeholder:font-medium
               `}
             />
