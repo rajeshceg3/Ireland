@@ -155,3 +155,6 @@ a, button, input, .transition-all-premium {
   z-index: -1;
   pointer-events: none;
 }
+
+/* Reserve header/category area; Leaflet zoom controls must remain tappable. */
+.leaflet-top.leaflet-left { top: 150px; }
