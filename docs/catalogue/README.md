@@ -1,6 +1,6 @@
 # Source-backed Ireland catalogue draft, November 7, 2026
 
-LOCAL DRAFT ONLY. Not pushed, deployed or accepted. Original public main175341e remains unchanged. Existing todo: catalogue and attraction layout follow-through. No real user data inspected or modified.
+Runtime PR24 merged as3664c8e after signed-in preview qualification. Public production qualified17:30 November7; parent acceptance pending. Existing todo: catalogue and attraction layout follow-through. No real user data inspected or modified.
 
 ## Decision
 
@@ -43,3 +43,37 @@ Remaining before release: rerun tests/build/pixels after final zoom correction; 
 17:23 local qualification supersedes the pending notes above: two consecutive320/390/844/1320 matrices passed all3photos, search/category, exact marker keyboard activation/Escape, hidden/inert background,44px close viewport bounds, pan/zoom/resize, darkmode, mixed reducedmotion, reload, raw export, private envelope model compatibility, wrong-app rejection without data change, exact legacy id10+id1 restore and explicit empty cleanup. Tiles stubbed only in repeated matrices. A previous real-network fourwidth run loaded OSM tiles; new resize code still needs its real-network recheck. Test targeting/readiness errors were corrected, not counted as product defects. Actual resize pin/notice overlap corrected with bottom140px fitting reserve; ongoing zoom completion defers a resize refit. Itinerary surface/header made opaque after actual pixels showed the map bleeding through. No live private Blob mutation needed for this catalogue compatibility check.
 
 Qualification script currently references the sibling saved-apps model checkout and local Playwright package; it is a retained reproducible local harness, not portable CI. Source runtime/automated tests/build remain local pending preview qualification and production release. Hosted proof/cleanup and parent acceptance remain open.
+
+
+## Preview qualification,17:27
+
+PR https://github.com/rajeshceg3/Ireland/pull/24 merged normally after preview passed. Preview https://ireland-a1gol6qpf-rajeshceg3s-projects.vercel.app/ was Ready for6d182bb, dashboard https://vercel.com/rajeshceg3s-projects/ireland/2ZVmsPJ1KmszJDZdGtwc9H1gqpi5 . Browser fetched and SHA256-compared all7catalogue/photo/JS/CSS assets against the local build: exact.24OSM tiles loaded at390px. All3actual detail dialogs opened, Escape closed and390/844resize exercised. Original legacy id10+id1 restore through file/preview/confirm preserved every old field, showed the warning and retained a before-restore copy; explicit empty restore left[]. Preview state was synthetic only; no private cloud write or real-user itinerary read.
+
+Safe preview captures are under preview/. The preview toolbar is Vercel-only and not part of public production. One landscape photo capture was taken during an entrance transition and is not accepted as final-layout evidence; use the later production image.
+
+### Re-running the harness
+
+Install Playwright in the test environment (not a runtime dependency) or set PLAYWRIGHT_MODULE to its ESM entry. CHROME_PATH optionally selects Chrome. `node docs/catalogue/check-local.mjs` serves the current build at4192 and checks320/390/844/1320. Set ORIGINAL_URL for a public hosted target, REPEATS=2 for repeat matrices, STUB_TILES=1 for repeat lifecycle checks without requesting map tiles. For the optional private-companion envelope model check, set COMPANION_MODEL to that project's lib/state.js; absence is an explicit skip, never private cloud verification. The normal runtime unit suite runs separately with `CI=true npm test -- --watchAll=false`; production build with `npm run build`.
+
+
+## Public production qualification,17:30
+
+Live https://ireland-nine.vercel.app/ . Runtime commit3664c8ea3ac1cfa5186003ce748e1f278ab4b5c9 . Production deployment https://ireland-dudy8h3ee-rajeshceg3s-projects.vercel.app/ , Ready25s; dashboard https://vercel.com/rajeshceg3s-projects/ireland/7TgVuE6Tdi62MGtXfu6xgQPJkaXn . All7JS/CSS/catalogue/photo assets compare byte-exact against the qualified local build, hashes retained in production/asset-hashes.json.
+
+One full public production320/390/844/1320 matrix passed with real OSM tiles. A second complete production lifecycle matrix passed with tiles stubbed, not counted as another real-basemap check. Every matrix opens all3actual photos/details, hits visible pins, exercises keyboard Enter/Escape,44px sticky close bounds, hidden/inert detail background, source/credit/officialhours links and absence of invented ratings, search/category, darkmode, mixed reducedmotion, pan/zoom/resize, reload, exact raw recovery export, rejected wrong-app retention, optional companion model compatibility, exact legacy id10+id1 restore and explicit empty cleanup.8unit tests pass; existing testing-library act deprecation warnings remain, no runtime assertion failures. Build passes.
+
+Inspected actual production pixels include390phone map and all3photos,320scrolled detail/source/actions,844landscape Blarney/photo,844legacy warning and1320map. Retained in production/. Legacy warning is fully readable below the fixed heading in the final landscape capture. Portrait source/credit links wrap; no overlap. Map pin size/fit leaves controls and bottom notice reachable. This is a browser viewport test, not a claim of physical-device coverage.
+
+All hosted test contexts were isolated synthetic sessions and restored to an explicitly empty itinerary before closing. Signed-in preview synthetic session also ended with[]and its prior copy retained. No real-user itinerary data read, rewritten, migrated or deleted. Private companion checks used its model only, not live cloud writes. Original15-record archive unchanged; local/preview/production evidence clearly separated. Parent owns acceptance and delivery; this is a bounded catalogue/detail repair, not fleet or preservation completeness.
+
+### Catalogue/detail state invariants
+
+| State/event | Result | Must remain true | Evidence |
+|---|---|---|---|
+| Browse and filter | Canonical IDs1/2/3 only; empty category remains empty | Saved embedded objects never replaced from catalogue | Fourwidth filter/recovery matrices |
+| Open marker | One opaque detail dialog; background inert and hidden | Pin title matches dialog/photo; close44px and reachable after scroll | All3destinations, phone/landscape pixels |
+| Close/Escape | Dialog detaches; background interactive | No second Leaflet popup under header | Fourwidth keyboard/reopen checks |
+| Resize during zoom | Refit after zoom completes | Pins clear header and notice | Pan/zoom/resize regression |
+| Restore wrong app | Reject and disable confirm | Current ordered itinerary exact unchanged | Fourwidth wrong-app rejection |
+| Restore earlier numbered records | Explicit preview/confirm keeps full objects and warns | Old id/name/coordinates never recast as verified place | id10+id1 full-object comparison and warning pixels |
+| Confirm empty version | Current itinerary[]; prior copy retained | No implicit union, migration or cloud sync | Local/preview/production cleanup |
