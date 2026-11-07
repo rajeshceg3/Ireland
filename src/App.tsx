@@ -36,6 +36,11 @@ function App() {
   // Ref to store the UI element that triggered the modal, for returning focus upon modal close
   const triggeringElementRef = useRef<HTMLElement | null>(null);
 
+  const browseRef = useRef<HTMLDivElement>(null);
+  const itineraryTriggerRef = useRef<HTMLElement | null>(null);
+  const closeItinerary = () => { setIsItineraryOpen(false); requestAnimationFrame(() => itineraryTriggerRef.current?.focus()); };
+  const toggleItinerary = () => { if (isItineraryOpen) closeItinerary(); else { itineraryTriggerRef.current = document.activeElement as HTMLElement; setIsItineraryOpen(true); } };
+  useEffect(() => { if (browseRef.current) { if (isItineraryOpen) browseRef.current.setAttribute('inert', ''); else browseRef.current.removeAttribute('inert'); } }, [isItineraryOpen]);
   const sceneRef = useRef<HTMLDivElement>(null);
   useEffect(() => {if (sceneRef.current) {if (selectedAttraction) sceneRef.current.setAttribute('inert','');else sceneRef.current.removeAttribute('inert');}}, [selectedAttraction]);
   // --- Effects ---
@@ -150,6 +155,7 @@ function App() {
       <JsonLdInjector jsonData={touristAttractionLd} scriptId="touristAttractionLdScript" />
       <div className="relative h-screen w-full overflow-hidden bg-background">
         <div ref={sceneRef} aria-hidden={!!selectedAttraction} style={{visibility:selectedAttraction?'hidden':'visible'}}>
+        <div ref={browseRef} aria-hidden={isItineraryOpen} style={{visibility:isItineraryOpen?'hidden':'visible',opacity:isItineraryOpen?0:1}}>
         {/* Map Background - Full Screen */}
         <div className="absolute inset-0 z-0">
           <MapComponent
@@ -167,7 +173,7 @@ function App() {
           theme={theme}
           onToggleTheme={toggleTheme}
           isItineraryOpen={isItineraryOpen}
-          onToggleItinerary={() => setIsItineraryOpen(!isItineraryOpen)}
+          onToggleItinerary={toggleItinerary}
         />
 
         {/* Floating Category Filter */}
@@ -176,24 +182,26 @@ function App() {
           onSelectCategory={handleCategorySelect}
         />
 
+        <div className="fixed bottom-7 left-3 z-20 max-w-[calc(100%-1.5rem)] rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 shadow-sm" role="note">3 source-checked places. Earlier numbered demo pins are no longer offered. Saved trip records are unchanged.</div>
+        </div>
         {/* Itinerary Panel - Sliding Drawer */}
         <div className={`
-          fixed top-0 right-0 h-full z-40 transition-transform duration-300 ease-in-out shadow-2xl
+          fixed top-0 right-0 h-full z-[60] transition-transform duration-300 ease-in-out shadow-2xl
           ${isItineraryOpen ? 'translate-x-0' : 'translate-x-full'}
           w-full md:w-96
         `}>
-          <ItineraryPanel />
+          {isItineraryOpen && <ItineraryPanel />}
           {/* Close button for mobile/desktop if needed, but the toggle in header handles it */}
           <button
-             className="absolute top-4 right-4 md:hidden p-2 bg-white/80 rounded-full text-text-primary shadow-sm"
-             onClick={() => setIsItineraryOpen(false)}
+             className="absolute top-3 right-3 z-[70] min-w-[44px] min-h-[44px] p-2 bg-white dark:bg-slate-900 rounded-full text-text-primary shadow-sm"
+             onClick={closeItinerary}
              aria-label="Close Itinerary"
           >
              ✕
           </button>
         </div>
 
-        <div className="fixed bottom-7 left-3 z-20 max-w-[calc(100%-1.5rem)] rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 shadow-sm" role="note">3 source-checked places. Earlier numbered demo pins are no longer offered. Saved trip records are unchanged.</div>
+
         </div>
         {/* Detail Modal */}
         <AttractionDetailCard

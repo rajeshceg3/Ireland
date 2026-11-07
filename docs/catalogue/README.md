@@ -77,3 +77,6 @@ All hosted test contexts were isolated synthetic sessions and restored to an exp
 | Restore wrong app | Reject and disable confirm | Current ordered itinerary exact unchanged | Fourwidth wrong-app rejection |
 | Restore earlier numbered records | Explicit preview/confirm keeps full objects and warns | Old id/name/coordinates never recast as verified place | id10+id1 full-object comparison and warning pixels |
 | Confirm empty version | Current itinerary[]; prior copy retained | No implicit union, migration or cloud sync | Local/preview/production cleanup |
+
+
+17:34 acceptance correction: parent found the itinerary's global browsing header still competed with scrolled file controls in844pixels. Catalogue correctness remains qualified; prior itinerary acceptance was held. The next increment hides/inerts the complete browsing chrome while the itinerary is open, uses a top-flush opaque sticky title, a44px close at every width, scroll padding on file controls and removes the nonfunctional eyebrow. Fourwidth checks now individually scroll/hit-test file input, Preview, Confirm and Download controls, verify background hidden/inert and close-to-browse recovery. Fresh local pixels inspected, production acceptance pending this correction.
