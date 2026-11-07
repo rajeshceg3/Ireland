@@ -36,6 +36,8 @@ function App() {
   // Ref to store the UI element that triggered the modal, for returning focus upon modal close
   const triggeringElementRef = useRef<HTMLElement | null>(null);
 
+  const sceneRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {if (sceneRef.current) {if (selectedAttraction) sceneRef.current.setAttribute('inert','');else sceneRef.current.removeAttribute('inert');}}, [selectedAttraction]);
   // --- Effects ---
   // Effect to fetch initial attraction data from the API on component mount
   useEffect(() => {
@@ -147,6 +149,7 @@ function App() {
     <>
       <JsonLdInjector jsonData={touristAttractionLd} scriptId="touristAttractionLdScript" />
       <div className="relative h-screen w-full overflow-hidden bg-background">
+        <div ref={sceneRef} aria-hidden={!!selectedAttraction} style={{visibility:selectedAttraction?'hidden':'visible'}}>
         {/* Map Background - Full Screen */}
         <div className="absolute inset-0 z-0">
           <MapComponent
@@ -190,6 +193,8 @@ function App() {
           </button>
         </div>
 
+        <div className="fixed bottom-7 left-3 z-20 max-w-[calc(100%-1.5rem)] rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 shadow-sm" role="note">3 source-checked places. Earlier numbered demo pins are no longer offered. Saved trip records are unchanged.</div>
+        </div>
         {/* Detail Modal */}
         <AttractionDetailCard
           attraction={selectedAttraction}

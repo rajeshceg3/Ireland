@@ -138,8 +138,9 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 50 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="glass-panel text-slate-800 rounded-[2rem] shadow-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto relative z-10 scrollbar-hide flex flex-col overflow-hidden ring-1 ring-white/60"
+            className="bg-white dark:bg-slate-900 text-slate-800 rounded-[2rem] shadow-2xl max-w-lg w-full max-h-[85vh] overflow-y-auto relative z-10 scrollbar-hide flex flex-col overflow-hidden ring-1 ring-white/60"
           >
+             <div className="sticky top-0 z-30 flex justify-end bg-white dark:bg-slate-900 p-2"><button ref={firstFocusableElementRef} onClick={handleClose} className="flex h-11 w-11 items-center justify-center rounded-full text-slate-700 dark:text-white hover:bg-slate-100" aria-label="Close attraction details"><X size={22}/></button></div>
              {/* Image Header */}
             <div className="relative h-72 sm:h-80 w-full shrink-0 overflow-hidden group bg-gray-100">
                 {isMainImageLoading && !imageError && (
@@ -165,17 +166,7 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
                     </div>
                 )}
 
-                <motion.button
-                    initial={{ opacity: 0, rotate: -90 }}
-                    animate={{ opacity: 1, rotate: 0 }}
-                    transition={{ delay: 0.4 }}
-                    ref={firstFocusableElementRef}
-                    onClick={handleClose}
-                    className="absolute top-4 right-4 p-2.5 bg-black/20 hover:bg-black/40 text-white rounded-full transition-all backdrop-blur-md border border-white/20 shadow-lg hover:rotate-90 hover:scale-110 active:scale-90"
-                    aria-label="Close attraction details"
-                >
-                    <X size={20} />
-                </motion.button>
+
 
                 <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 via-black/40 to-transparent pt-32">
                      <motion.div
@@ -187,10 +178,10 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-bold bg-primary/90 text-white shadow-sm backdrop-blur-sm ring-1 ring-white/20">
                             {attraction.category}
                         </span>
-                        <div className="flex items-center gap-1 text-yellow-400 bg-black/30 backdrop-blur-sm px-2 py-0.5 rounded-full ring-1 ring-white/10">
+                        {typeof attraction.rating === 'number' && <div className="flex items-center gap-1 text-yellow-400 bg-black/30 backdrop-blur-sm px-2 py-0.5 rounded-full ring-1 ring-white/10">
                             <Star className="fill-current" size={12} />
                             <span className="text-xs font-bold text-white">{attraction.rating}</span>
-                        </div>
+                        </div>}
                     </motion.div>
                     <motion.h2
                         id="attraction-detail-title"
@@ -208,6 +199,7 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
                 initial="hidden"
                 animate="visible"
             >
+                {attraction.photoCredit && <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-300">{attraction.photoCredit.caption} <a className="underline" href={attraction.photoCredit.source} target="_blank" rel="noopener noreferrer">{attraction.photoCredit.title} - {attraction.photoCredit.author}</a>, <a className="underline" href={attraction.photoCredit.licenseUrl} target="_blank" rel="noopener noreferrer">{attraction.photoCredit.license}</a>. Display crop only; no file edits.</p>}
                 {/* Info Grid */}
                 <motion.div variants={itemVariants} className="grid grid-cols-2 gap-4">
                     <div className="bg-white/60 dark:bg-slate-800/80 p-4 rounded-2xl border border-white/50 dark:border-white/5 shadow-sm hover:shadow-md transition-shadow">
@@ -215,7 +207,7 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
                             <Clock size={18} />
                             <span className="text-xs font-bold uppercase tracking-wider text-slate-500">Hours</span>
                         </div>
-                        <p className="font-semibold text-slate-800 dark:text-slate-100 text-sm">{attraction.hours.open} - {attraction.hours.close}</p>
+                        <p className="font-semibold text-slate-800 dark:text-slate-100 text-sm">{attraction.hoursUrl ? <a className="underline" href={attraction.hoursUrl} target="_blank" rel="noopener noreferrer">Check official opening times</a> : 'Check the official website before visiting.'}</p>
                     </div>
                      <div className="bg-white/60 dark:bg-slate-800/80 p-4 rounded-2xl border border-white/50 dark:border-white/5 shadow-sm hover:shadow-md transition-shadow">
                          <a
@@ -243,6 +235,7 @@ const AttractionDetailCard: React.FC<Props> = ({ attraction, onClose, triggering
                     </p>
                 </motion.div>
 
+                {attraction.locationSource && <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300"><a href={attraction.locationSource} target="_blank" rel="noopener noreferrer" className="underline">Location and visitor information source</a>. Checked {attraction.verifiedOn}. Opening times can change; verify before travelling.</p>}
                 {/* Thumbnails */}
                 {attraction.photos && attraction.photos.length > 1 && (
                   <motion.div variants={itemVariants}>

@@ -16,17 +16,9 @@ const MapUpdater: React.FC<MapUpdaterProps> = ({ attractions }) => {
       return;
     }
 
-    if (attractions.length === 1) {
-      // If only one attraction, center the map on it
-      const { lat, lng } = attractions[0].location;
-      map.setView([lat, lng], 13); // Zoom level 13 is a reasonable default for a single point
-    } else {
-      // If multiple attractions, fit them all in the view
-      const bounds = new L.LatLngBounds(
-        attractions.map(attraction => [attraction.location.lat, attraction.location.lng])
-      );
-      map.fitBounds(bounds, { padding: [50, 50] }); // Add some padding around the markers
-    }
+    const bounds = new L.LatLngBounds(attractions.map(a => [a.location.lat, a.location.lng]));
+    // Keep every pin below the header/category controls and above the catalogue notice.
+    map.fitBounds(bounds, {paddingTopLeft:[50,190],paddingBottomRight:[50,105],maxZoom:13,animate:false});
   }, [attractions, map]);
 
   return null; // This component does not render anything

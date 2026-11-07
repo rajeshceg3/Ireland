@@ -1,0 +1,283 @@
+[
+  {
+    "id": "1",
+    "name": "Cliffs of Moher",
+    "location": {
+      "lat": 52.9715,
+      "lng": -9.4309
+    },
+    "description": "Stunning sea cliffs in County Clare, offering breathtaking views of the Atlantic Ocean.",
+    "photos": [
+      "https://via.placeholder.com/300x200.png?text=Cliffs+of+Moher+1",
+      "https://via.placeholder.com/300x200.png?text=Cliffs+of+Moher+2"
+    ],
+    "rating": 4.8,
+    "hours": {
+      "open": "09:00",
+      "close": "19:00"
+    },
+    "category": "Natural Site",
+    "averageVisitDuration": 120,
+    "website": "https://www.cliffsofmoher.ie/"
+  },
+  {
+    "id": "2",
+    "name": "Guinness Storehouse",
+    "location": {
+      "lat": 53.3419,
+      "lng": -6.2867
+    },
+    "description": "Experience the history of Guinness in Dublin. Enjoy a pint at the Gravity Bar with panoramic city views.",
+    "photos": [
+      "https://via.placeholder.com/300x200.png?text=Guinness+Storehouse+1"
+    ],
+    "rating": 4.5,
+    "hours": {
+      "open": "10:00",
+      "close": "18:00"
+    },
+    "category": "Museum",
+    "averageVisitDuration": 180,
+    "website": "https://www.guinness-storehouse.com/"
+  },
+  {
+    "id": "3",
+    "name": "Blarney Castle",
+    "location": {
+      "lat": 51.929,
+      "lng": -8.5706
+    },
+    "description": "Historic castle in Blarney, County Cork, famous for the Blarney Stone.",
+    "photos": [
+      "https://via.placeholder.com/300x200.png?text=Blarney+Castle+1"
+    ],
+    "rating": 4.6,
+    "hours": {
+      "open": "09:00",
+      "close": "17:30"
+    },
+    "category": "Castle",
+    "averageVisitDuration": 150,
+    "website": "https://www.blarneycastle.ie/"
+  },
+  {
+    "id": "4",
+    "name": "Cliffs of Moher #4",
+    "location": {
+      "lat": 52.81932489480901,
+      "lng": -9.454003352001005
+    },
+    "description": "Stunning sea cliffs in County Clare, offering breathtaking views of the Atlantic Ocean.",
+    "photos": [
+      "https://via.placeholder.com/300x200.png?text=Cliffs+of+Moher+1",
+      "https://via.placeholder.com/300x200.png?text=Cliffs+of+Moher+2"
+    ],
+    "rating": 4.8,
+    "hours": {
+      "open": "09:00",
+      "close": "19:00"
+    },
+    "category": "Natural Site"
+  },
+  {
+    "id": "5",
+    "name": "Guinness Storehouse #5",
+    "location": {
+      "lat": 53.09223744265966,
+      "lng": -6.499000368000803
+    },
+    "description": "Experience the history of Guinness in Dublin. Enjoy a pint at the Gravity Bar with panoramic city views.",
+    "photos": [
+      "https://via.placeholder.com/300x200.png?text=Guinness+Storehouse+1"
+    ],
+    "rating": 4.5,
+    "hours": {
+      "open": "10:00",
+      "close": "18:00"
+    },
+    "category": "Museum"
+  },
+  {
+    "id": "6",
+    "name": "Blarney Castle #6",
+    "location": {
+      "lat": 51.99695999010706,
+      "lng": -8.34810433000286
+    },
+    "description": "Historic castle in Blarney, County Cork, famous for the Blarney Stone.",
+    "photos": [
+      "https://via.placeholder.com/300x200.png?text=Blarney+Castle+1"
+    ],
+    "rating": 4.6,
+    "hours": {
+      "open": "09:00",
+      "close": "17:30"
+    },
+    "category": "Castle"
+  },
+  {
+    "id": "7",
+    "name": "Cliffs of Moher #7",
+    "location": {
+      "lat": 52.76450077888688,
+      "lng": -9.233441194000154
+    },
+    "description": "Stunning sea cliffs in County Clare, offering breathtaking views of the Atlantic Ocean.",
+    "photos": [
+      "https://via.placeholder.com/300x200.png?text=Cliffs+of+Moher+1",
+      "https://via.placeholder.com/300x200.png?text=Cliffs+of+Moher+2"
+    ],
+    "rating": 4.8,
+    "hours": {
+      "open": "09:00",
+      "close": "19:00"
+    },
+    "category": "Natural Site"
+  },
+  {
+    "id": "8",
+    "name": "Guinness Storehouse #8",
+    "location": {
+      "lat": 53.40901860284489,
+      "lng": -6.070867292000079
+    },
+    "description": "Experience the history of Guinness in Dublin. Enjoy a pint at the Gravity Bar with panoramic city views.",
+    "photos": [
+      "https://via.placeholder.com/300x200.png?text=Guinness+Storehouse+1"
+    ],
+    "rating": 4.5,
+    "hours": {
+      "open": "10:00",
+      "close": "18:00"
+    },
+    "category": "Museum"
+  },
+  {
+    "id": "9",
+    "name": "Blarney Castle #9",
+    "location": {
+      "lat": 51.93976973400098,
+      "lng": -8.340198398999995
+    },
+    "description": "Historic castle in Blarney, County Cork, famous for the Blarney Stone.",
+    "photos": [
+      "https://via.placeholder.com/300x200.png?text=Blarney+Castle+1"
+    ],
+    "rating": 4.6,
+    "hours": {
+      "open": "09:00",
+      "close": "17:30"
+    },
+    "category": "Castle"
+  },
+  {
+    "id": "10",
+    "name": "Cliffs of Moher #10",
+    "location": {
+      "lat": 53.15615433423018,
+      "lng": -9.29493508000004
+    },
+    "description": "Stunning sea cliffs in County Clare, offering breathtaking views of the Atlantic Ocean.",
+    "photos": [
+      "https://via.placeholder.com/300x200.png?text=Cliffs+of+Moher+1",
+      "https://via.placeholder.com/300x200.png?text=Cliffs+of+Moher+2"
+    ],
+    "rating": 4.8,
+    "hours": {
+      "open": "09:00",
+      "close": "19:00"
+    },
+    "category": "Natural Site"
+  },
+  {
+    "id": "11",
+    "name": "Guinness Storehouse #11",
+    "location": {
+      "lat": 53.13301399712579,
+      "lng": -6.402403355000144
+    },
+    "description": "Experience the history of Guinness in Dublin. Enjoy a pint at the Gravity Bar with panoramic city views.",
+    "photos": [
+      "https://via.placeholder.com/300x200.png?text=Guinness+Storehouse+1"
+    ],
+    "rating": 4.5,
+    "hours": {
+      "open": "10:00",
+      "close": "18:00"
+    },
+    "category": "Museum"
+  },
+  {
+    "id": "12",
+    "name": "Blarney Castle #12",
+    "location": {
+      "lat": 51.80052876900025,
+      "lng": -8.717603331999957
+    },
+    "description": "Historic castle in Blarney, County Cork, famous for the Blarney Stone.",
+    "photos": [
+      "https://via.placeholder.com/300x200.png?text=Blarney+Castle+1"
+    ],
+    "rating": 4.6,
+    "hours": {
+      "open": "09:00",
+      "close": "17:30"
+    },
+    "category": "Castle"
+  },
+  {
+    "id": "13",
+    "name": "Cliffs of Moher #13",
+    "location": {
+      "lat": 53.00681870242867,
+      "lng": -9.38921076000012
+    },
+    "description": "Stunning sea cliffs in County Clare, offering breathtaking views of the Atlantic Ocean.",
+    "photos": [
+      "https://via.placeholder.com/300x200.png?text=Cliffs+of+Moher+1",
+      "https://via.placeholder.com/300x200.png?text=Cliffs+of+Moher+2"
+    ],
+    "rating": 4.8,
+    "hours": {
+      "open": "09:00",
+      "close": "19:00"
+    },
+    "category": "Natural Site"
+  },
+  {
+    "id": "14",
+    "name": "Guinness Storehouse #14",
+    "location": {
+      "lat": 53.13624467968963,
+      "lng": -6.431393842000088
+    },
+    "description": "Experience the history of Guinness in Dublin. Enjoy a pint at the Gravity Bar with panoramic city views.",
+    "photos": [
+      "https://via.placeholder.com/300x200.png?text=Guinness+Storehouse+1"
+    ],
+    "rating": 4.5,
+    "hours": {
+      "open": "10:00",
+      "close": "18:00"
+    },
+    "category": "Museum"
+  },
+  {
+    "id": "15",
+    "name": "Blarney Castle #15",
+    "location": {
+      "lat": 51.89520720600096,
+      "lng": -8.72894817399983
+    },
+    "description": "Historic castle in Blarney, County Cork, famous for the Blarney Stone.",
+    "photos": [
+      "https://via.placeholder.com/300x200.png?text=Blarney+Castle+1"
+    ],
+    "rating": 4.6,
+    "hours": {
+      "open": "09:00",
+      "close": "17:30"
+    },
+    "category": "Castle"
+  }
+]
