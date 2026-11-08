@@ -1,0 +1,37 @@
+[
+  {
+    "url": "https://ireland-nine.vercel.app/api/attractions.json",
+    "sha256": "c0b56641a2327c59ba5ff336dde596843764c62aae14ca72575b1b0961dcb77c",
+    "matched": true
+  },
+  {
+    "url": "https://ireland-nine.vercel.app/photos/cliffs.jpg",
+    "sha256": "ea62c9886b1e746510b01172474355efebbd688a68a8fc3c7fea4fef5b3ec2e8",
+    "matched": true
+  },
+  {
+    "url": "https://ireland-nine.vercel.app/photos/guinness.jpg",
+    "sha256": "ec10b726132a33d5c56ccfb738b7c25e843ea82bdf9109c79bbd6fee102e885b",
+    "matched": true
+  },
+  {
+    "url": "https://ireland-nine.vercel.app/photos/blarney.jpg",
+    "sha256": "090d28f9dfc5365a7765c39cb49155a35b63dfca77a048de472347ac985b0cc2",
+    "matched": true
+  },
+  {
+    "url": "https://ireland-nine.vercel.app/static/js/453.0d0a8798.chunk.js",
+    "sha256": "96ab2737a0761dfbe160020d64d6051e297e48fa8f02e4758a9fe1abcb0a6200",
+    "matched": true
+  },
+  {
+    "url": "https://ireland-nine.vercel.app/static/js/main.a2aca9fe.js",
+    "sha256": "9d23550f3ec18240e3f6b6a5f3795eaa06211cee35d20563a2021ca216c29184",
+    "matched": true
+  },
+  {
+    "url": "https://ireland-nine.vercel.app/static/css/main.5a4de579.css",
+    "sha256": "b370837439c7c9a994a64361284fa4b472db31dcaeef698d8fba7805117c0f52",
+    "matched": true
+  }
+]
