@@ -1,0 +1,30 @@
+[
+  {
+    "path": "/api/attractions.json",
+    "match": true
+  },
+  {
+    "path": "/static/js/453.0d0a8798.chunk.js",
+    "match": true
+  },
+  {
+    "path": "/static/js/main.b7458b3c.js",
+    "match": true
+  },
+  {
+    "path": "/static/css/main.a4ace801.css",
+    "match": true
+  },
+  {
+    "path": "/photos/cliffs.jpg",
+    "match": true
+  },
+  {
+    "path": "/photos/guinness.jpg",
+    "match": true
+  },
+  {
+    "path": "/photos/blarney.jpg",
+    "match": true
+  }
+]

@@ -1,0 +1,5 @@
+SKIP optional private companion model check: set COMPANION_MODEL
+PASS 0 320 all3sourcephotos/visiblepins/pan-zoom-resize/EnterEscape/44close/inert/sourcecredits/category/dark/reload/wrong-app-retained/recovery/optional-private-envelope/legacyexact/explicit-empty
+PASS 0 390 all3sourcephotos/visiblepins/pan-zoom-resize/EnterEscape/44close/inert/sourcecredits/category/dark/reload/wrong-app-retained/recovery/optional-private-envelope/legacyexact/explicit-empty
+PASS 0 844 all3sourcephotos/visiblepins/pan-zoom-resize/EnterEscape/44close/inert/sourcecredits/category/dark/reload/wrong-app-retained/recovery/optional-private-envelope/legacyexact/explicit-empty
+PASS 0 1320 all3sourcephotos/visiblepins/pan-zoom-resize/EnterEscape/44close/inert/sourcecredits/category/dark/reload/wrong-app-retained/recovery/optional-private-envelope/legacyexact/explicit-empty
