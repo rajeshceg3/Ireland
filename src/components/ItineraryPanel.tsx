@@ -3,13 +3,17 @@ import { parseItineraryRestore } from '../context/restore';
 import { Attraction } from '../types/attraction';
 import { useItinerary } from '../context/ItineraryContext';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Trash2, Compass, Tent, Share2 } from 'lucide-react';
+import { Trash2, Compass, Tent } from 'lucide-react';
 
 const ItineraryPanel = () => {
   const { itinerary, removeAttractionFromItinerary, saveStatus, exportRecovery, restoreSelected } = useItinerary();
 
   const [selected,setSelected]=useState<Attraction[]|null>(null);
   const [restoreStatus,setRestoreStatus]=useState('');
+  const [restoreOpen,setRestoreOpen]=useState(false);
+  const [fileChosen,setFileChosen]=useState(false);
+  const nextClass='bg-violet-700 text-white border-violet-700 font-bold shadow-md hover:bg-violet-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-violet-500';
+  const quietClass='border-slate-400 text-slate-800 bg-white hover:bg-slate-50';
   const fileRef=React.useRef<HTMLInputElement>(null);
   const choose=async()=>{setSelected(null);try{const f=fileRef.current?.files?.[0];if(!f||f.size>250000)throw Error();const v=parseItineraryRestore(await f.text());setSelected(v);setRestoreStatus(v.length?`Selected ordered version: ${v.map((x:any)=>x.name).join(' → ')}. Confirm to replace this browser itinerary.`:'Selected empty version. Confirming explicitly removes all current stops.')}catch{setRestoreStatus('Restore not accepted. Wrong app or malformed file. Existing itinerary is unchanged.')}};
   return (
@@ -30,13 +34,24 @@ const ItineraryPanel = () => {
         </span>
       </div>
 
-      <div className="mb-5 text-sm leading-relaxed p-3 bg-white/80 rounded-xl text-slate-800">
+      <section aria-label="Itinerary recovery" className="mb-5 text-sm leading-relaxed p-4 bg-slate-100 rounded-xl text-slate-800">
         <p role="status">{saveStatus}</p>
-        <button onClick={exportRecovery} className="scroll-mt-28 my-2 p-3 border rounded-lg font-bold">Download recovery file</button>
-        <a href="https://saved-apps.vercel.app/" target="_blank" rel="noopener noreferrer" className="block underline p-2">Open private saved-apps home</a>
-        <p>Choose your recovery file there, press Import selected file, then wait for Cloud save confirmed. Nothing uploads automatically.</p>
-      </div>
-      <section className="mb-5 p-3 bg-white/80 rounded-xl text-sm leading-relaxed text-slate-800"><h3 className="font-bold">Restore a private itinerary version</h3><p>Export a selected version from the private home. Choose it here, review, then confirm. This replaces this browser itinerary, including an explicitly empty version. A prior recovery copy is kept and downloaded first.</p><label className="block py-2 scroll-mt-28">Choose itinerary restore file<input type="file" accept=".json,application/json" ref={fileRef} onChange={()=>{setSelected(null);setRestoreStatus('File selected. Press Preview selected itinerary. Nothing changed.')}} className="block max-w-full" /></label><button onClick={choose} className="scroll-mt-28 p-3 border rounded-lg">Preview selected itinerary</button><p role="status">{restoreStatus}</p><button disabled={selected===null} onClick={()=>{if(selected!==null&&restoreSelected(selected)){setSelected(null);setRestoreStatus('Selected itinerary restored in this browser. This does not sync new changes to the private home.')}}} className="scroll-mt-28 p-3 border rounded-lg disabled:opacity-50">Keep prior copy and restore selected itinerary</button></section>
+        <button onClick={exportRecovery} className={`scroll-mt-28 my-3 min-h-11 p-3 border rounded-lg w-full ${restoreOpen ? quietClass : nextClass}`}>Download recovery file</button>
+        <details className="border-t border-slate-300 pt-2">
+          <summary className="min-h-11 py-3 cursor-pointer">Keep a copy in the private home</summary>
+          <p className="mb-2">Download above, then import that file in the private home. Wait for "Cloud save confirmed". Nothing uploads automatically.</p>
+          <a href="https://saved-apps.vercel.app/" target="_blank" rel="noopener noreferrer" className="block underline py-3 min-h-11">Open private saved-apps home</a>
+        </details>
+      </section>
+      <details className="mb-5 p-4 bg-slate-100 rounded-xl text-sm leading-relaxed text-slate-800" onToggle={e=>setRestoreOpen(e.currentTarget.open)}>
+        <summary className="font-bold min-h-11 py-3 cursor-pointer">Restore a private itinerary version</summary>
+        <p>Export a selected version from the private home. Choose it here, review, then confirm.</p>
+        <p className="my-3 font-semibold">Confirming replaces this browser itinerary, even with an empty version. A prior recovery copy is kept and downloaded first.</p>
+        <label className="block py-2 scroll-mt-28">Choose itinerary restore file<input type="file" accept=".json,application/json" ref={fileRef} onChange={()=>{setSelected(null);setFileChosen(!!fileRef.current?.files?.length);setRestoreStatus('File selected. Press Preview selected itinerary. Nothing changed.')}} className="block max-w-full mt-2" /></label>
+        <button onClick={choose} className={`scroll-mt-28 my-2 min-h-11 p-3 border rounded-lg w-full ${fileChosen && selected===null ? nextClass : quietClass}`}>Preview selected itinerary</button>
+        <p role="status" className="my-2">{restoreStatus}</p>
+        <button disabled={selected===null} onClick={()=>{if(selected!==null&&restoreSelected(selected)){setSelected(null);setFileChosen(false);setRestoreStatus('Selected itinerary restored in this browser. This does not sync new changes to the private home.')}}} className={`scroll-mt-28 min-h-11 p-3 border rounded-lg w-full ${selected!==null ? nextClass : quietClass} disabled:opacity-50 disabled:cursor-not-allowed`}>Keep prior copy and restore selected itinerary</button>
+      </details>
       {itinerary.some(x => /^([4-9]|1[0-5])$/.test(x.id)) && <p className="mb-4 scroll-mt-28 rounded-xl bg-amber-50 p-3 text-sm text-amber-950">Your trip contains records from the earlier demo catalogue. Their saved names and coordinates are preserved, but those numbered places were not verified. Review them before travelling; no stop was replaced or removed.</p>}
       {/* Content */}
       {itinerary.length === 0 ? (
@@ -95,31 +110,6 @@ const ItineraryPanel = () => {
         </ul>
       )}
 
-      {/* Footer Actions */}
-      <AnimatePresence>
-      {itinerary.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 100 }}
-            transition={{ type: 'spring', damping: 20 }}
-            className="relative mt-auto p-6 bg-gradient-to-t from-white via-white/95 to-transparent dark:from-slate-900 dark:via-slate-900/95 z-20"
-          >
-              <motion.button
-                whileHover={{ scale: 1.02, boxShadow: "0 10px 30px -10px rgba(var(--color-primary), 0.5)" }}
-                whileTap={{ scale: 0.98 }}
-                onClick={exportRecovery}
-                className="w-full py-4 bg-slate-800 text-white rounded-2xl font-bold shadow-xl flex items-center justify-center gap-2 group relative overflow-hidden"
-              >
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary to-secondary opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  <span className="relative z-10 flex items-center gap-2">
-                    <Share2 size={20} />
-                    Download private recovery file
-                  </span>
-              </motion.button>
-          </motion.div>
-      )}
-      </AnimatePresence>
     </aside>
   );
 };

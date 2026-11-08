@@ -1,0 +1,5 @@
+# Recovery hierarchy
+
+Separate from accepted itinerary layout fix, November8. Default: one primary Download recovery file, browser-only/error status visible, optional private-home instructions and restore controls behind explicit disclosures. Restore selection shifts sole primary to Preview, then Confirm. No parser/context/storage behavior changed; wrong-app rejection, exact legacy restore and explicitly empty replacement preserved. Replace/empty/prior-copy/download-first cautions appear before choosing and confirming. Duplicate bottom download removed.
+
+Eight units/build pass. Local fourwidth lifecycle checks passed, repeat completed via targeted1320 after outer execution timeout. Added computed-color phase checks pass320/390/844/1320; initial tests needed actual state-readiness and quiet-hover color allowance, not product changes. Optional private companion check skipped. Actual closedphone/desktop and openphone/landscape confirm pixels inspected. Local evidence, not hosted qualification. Main review and final production checks pending.
